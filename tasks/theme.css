@@ -1,0 +1,201 @@
+/* Retrospective theme — quiet, editorial, offline-safe.
+   System type on purpose: renders natively everywhere, no font loading. */
+
+:root {
+  --paper: #fcfcfa;
+  --ink: #21272b;
+  --muted: #5f6b70;
+  --accent: #23664f;
+  --rule: #e3e5e0;
+  --todo-ink: #8a6412;
+  --todo-bg: #faf3de;
+
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.reveal-viewport {
+  background: var(--paper);
+}
+
+.reveal {
+  font-family: var(--sans);
+  font-size: 30px;
+  font-weight: 400;
+  color: var(--ink);
+  line-height: 1.45;
+}
+
+.reveal .slides section {
+  text-align: left;
+  padding: 0 20px;
+}
+
+/* ---- type ---- */
+
+.reveal h1,
+.reveal h2 {
+  font-family: var(--sans);
+  color: var(--ink);
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  line-height: 1.12;
+  margin: 0 0 0.6em 0;
+  text-transform: none;
+}
+
+.reveal h1 { font-size: 2.6em; }
+.reveal h2 { font-size: 1.7em; }
+
+.reveal .kicker {
+  font-family: var(--mono);
+  font-size: 0.5em;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 1.6em 0;
+}
+
+.reveal p { margin: 0 0 0.7em 0; }
+
+.reveal .muted { color: var(--muted); }
+
+.reveal .small { font-size: 0.72em; }
+
+.reveal a { color: var(--accent); text-decoration: none; }
+
+.reveal strong { font-weight: 600; }
+
+/* ---- lists ---- */
+
+.reveal ul, .reveal ol {
+  display: block;
+  margin: 0 0 0.7em 1.05em;
+}
+
+.reveal li { margin-bottom: 0.45em; }
+
+.reveal ul li::marker { color: var(--muted); }
+
+/* ---- structural bits ---- */
+
+.reveal hr {
+  border: 0;
+  border-top: 1px solid var(--rule);
+  margin: 1em 0;
+}
+
+/* two-column layout for compare / role slides */
+.cols {
+  display: flex;
+  gap: 1.6em;
+  align-items: flex-start;
+}
+.cols > div { flex: 1; min-width: 0; }
+
+.col-label {
+  font-family: var(--mono);
+  font-size: 0.55em;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 0.6em;
+  margin-bottom: 1em;
+}
+
+/* outcomes: plain numbers over a hairline, no cards */
+.stats {
+  display: flex;
+  gap: 2em;
+  border-top: 1px solid var(--rule);
+  padding-top: 0.9em;
+  margin-top: 0.4em;
+}
+.stats > div { flex: 1; }
+.stats .num {
+  font-weight: 650;
+  font-size: 1.9em;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+.stats .label {
+  font-size: 0.62em;
+  color: var(--muted);
+  margin-top: 0.35em;
+  line-height: 1.35;
+}
+
+/* timeline rows */
+.timeline { margin-top: 0.4em; }
+.timeline .row {
+  display: flex;
+  gap: 1.2em;
+  padding: 0.5em 0;
+  border-top: 1px solid var(--rule);
+  align-items: baseline;
+}
+.timeline .when {
+  font-family: var(--mono);
+  font-size: 0.58em;
+  color: var(--accent);
+  flex: 0 0 5.5em;
+}
+.timeline .what { font-size: 0.8em; }
+
+/* screenshot / figure placeholder frame */
+.figure {
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  background: #fff;
+  padding: 0.4em;
+}
+.figure img { max-width: 100%; display: block; }
+
+/* ---- placeholders to replace with real content ---- */
+.todo {
+  color: var(--todo-ink);
+  background: var(--todo-bg);
+  border-bottom: 1.5px dashed var(--todo-ink);
+  padding: 0 0.15em;
+  border-radius: 2px;
+}
+
+/* ---- footer: section rail + page number ---- */
+
+.deck-footer {
+  position: fixed;
+  bottom: 22px;
+  left: 34px;
+  right: 34px;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  z-index: 10;
+  pointer-events: none;
+}
+
+.deck-footer .rail span {
+  text-transform: uppercase;
+  margin-right: 1.4em;
+  opacity: 0.45;
+}
+.deck-footer .rail span.on {
+  color: var(--accent);
+  opacity: 1;
+}
+
+/* hide reveal's default progress/controls chrome we don't want */
+.reveal .progress { display: none; }
+
+.reveal .controls { color: var(--muted); }
+
+/* speaker-notes-friendly print */
+@media print {
+  .deck-footer { display: none; }
+}

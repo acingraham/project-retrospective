@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tasks — project retrospective</title>
+  <link rel="stylesheet" href="lib/reveal/reset.css">
+  <link rel="stylesheet" href="lib/reveal/reveal.css">
+  <link rel="stylesheet" href="theme.css">
+</head>
+<body>
+
+<div class="reveal">
+  <div class="slides">
+
+    <!-- 1 · Title -->
+    <section data-section="context">
+      <p class="kicker">Project retrospective</p>
+      <h1>Tasks</h1>
+      <p class="muted">Flatiron Health · <span class="todo">2023–2025 (your dates)</span></p>
+      <p class="small muted" style="margin-top:4em">Andrew Ingraham · <span class="todo">your title</span></p>
+      <aside class="notes">
+        Open with one sentence: what Tasks is, in plain language, before touching the slides.
+        Interviewers remember a clean one-liner. Something like: "Tasks is the work queue
+        inside Flatiron's oncology EHR — it's how clinic staff track everything that isn't a
+        patient visit."
+      </aside>
+    </section>
+
+    <!-- 2 · Context -->
+    <section data-section="context">
+      <p class="kicker">Context</p>
+      <h2>Where Tasks sits</h2>
+      <ul>
+        <li><span class="todo">One line on Flatiron for interviewers who don't know it — e.g. "Flatiron builds software for community oncology clinics, including the OncoEMR electronic health record."</span></li>
+        <li><span class="todo">What Tasks is and who uses it (nurses? front desk? physicians? how many users / clinics?)</span></li>
+        <li><span class="todo">Why it matters clinically or operationally — what breaks when task work falls through</span></li>
+      </ul>
+      <aside class="notes">
+        Keep this to 45 seconds. The goal is just enough context that the problem slide lands.
+        Don't explain the whole EHR.
+      </aside>
+    </section>
+
+    <!-- 3 · The problem -->
+    <section data-section="problem">
+      <p class="kicker">The problem</p>
+      <h2><span class="todo">The user pain, stated as a sentence — not "improve tasks"</span></h2>
+      <ul>
+        <li><span class="todo">Evidence #1 — a number if you have one (volume, time lost, backlog, NPS verbatim)</span></li>
+        <li><span class="todo">Evidence #2 — what users actually did as a workaround</span></li>
+        <li><span class="todo">Why now — what made this the moment to invest</span></li>
+      </ul>
+      <aside class="notes">
+        This is the slide interviews dig into. Be ready for: "How did you know this was the
+        right problem?" and "What did you deprioritize to work on this?"
+      </aside>
+    </section>
+
+    <!-- 4 · Role & team -->
+    <section data-section="problem">
+      <p class="kicker">My role</p>
+      <h2>What I owned</h2>
+      <div class="cols">
+        <div>
+          <p class="col-label">Me</p>
+          <ul class="small">
+            <li><span class="todo">Your actual scope — strategy? roadmap? delivery? stakeholders?</span></li>
+            <li><span class="todo">What you personally did vs. delegated</span></li>
+          </ul>
+        </div>
+        <div>
+          <p class="col-label">The team</p>
+          <ul class="small">
+            <li><span class="todo">Team shape — # engineers, design, data, clinical SMEs</span></li>
+            <li><span class="todo">Key partners — other teams, clinical ops, customers</span></li>
+          </ul>
+        </div>
+      </div>
+      <aside class="notes">
+        Be precise about ownership — inflated claims get probed. "I" for what you did,
+        "we" for what the team did, and be consistent.
+      </aside>
+    </section>
+
+    <!-- 5 · Approach -->
+    <section data-section="approach">
+      <p class="kicker">Approach</p>
+      <h2>The bets we made</h2>
+      <ol>
+        <li><span class="todo">Bet #1 — a real strategic choice, phrased as a choice (e.g. "rebuild the queue model rather than patch notifications")</span></li>
+        <li><span class="todo">Bet #2</span></li>
+        <li><span class="todo">Bet #3 — cut this if you only had two</span></li>
+      </ol>
+      <aside class="notes">
+        Frame these as decisions with alternatives, not a feature list. Each one should
+        have a "we could have instead..." you can voice if asked.
+      </aside>
+    </section>
+
+    <!-- 6 · A decision worth discussing -->
+    <section data-section="approach">
+      <p class="kicker">A decision worth discussing</p>
+      <h2><span class="todo">The hardest call you made</span></h2>
+      <div class="cols">
+        <div>
+          <p class="col-label">The options</p>
+          <ul class="small">
+            <li><span class="todo">Option A and its appeal</span></li>
+            <li><span class="todo">Option B and its appeal</span></li>
+          </ul>
+        </div>
+        <div>
+          <p class="col-label">What we chose, and why</p>
+          <p class="small"><span class="todo">The choice, the deciding factor, and what it cost you</span></p>
+        </div>
+      </div>
+      <aside class="notes">
+        This slide exists to invite the interviewer in. End it by pausing — "happy to go
+        deeper on this one" — it turns the presentation into a conversation.
+      </aside>
+    </section>
+
+    <!-- 7 · What got hard -->
+    <section data-section="approach">
+      <p class="kicker">What got hard</p>
+      <h2><span class="todo">The thing that almost derailed it</span></h2>
+      <ul>
+        <li><span class="todo">What happened — technical, organizational, or clinical</span></li>
+        <li><span class="todo">What you did about it, concretely</span></li>
+        <li><span class="todo">How it resolved — including anything that stayed unresolved</span></li>
+      </ul>
+      <aside class="notes">
+        Honesty is the differentiator here. A real mess handled well beats a smooth story.
+        Avoid villains — describe the constraint, not the person.
+      </aside>
+    </section>
+
+    <!-- 8 · What shipped -->
+    <section data-section="approach">
+      <p class="kicker">What shipped</p>
+      <h2>The product, briefly</h2>
+      <div class="figure">
+        <p class="small muted" style="padding:2.5em 1em; text-align:center">
+          <span class="todo">Drop a product screenshot here (img tag) — or delete this slide if you can't share screens from a health product. A hand-drawn-style diagram of the workflow is a good substitute.</span>
+        </p>
+      </div>
+      <aside class="notes">
+        If real screenshots are off-limits (PHI, confidentiality), say so out loud — it
+        reads as judgment, not evasion — and describe the before/after workflow instead.
+      </aside>
+    </section>
+
+    <!-- 9 · Outcomes -->
+    <section data-section="outcomes">
+      <p class="kicker">Outcomes</p>
+      <h2>What changed</h2>
+      <div class="stats">
+        <div>
+          <div class="num"><span class="todo">XX%</span></div>
+          <div class="label"><span class="todo">Your headline metric, with its baseline</span></div>
+        </div>
+        <div>
+          <div class="num"><span class="todo">XX</span></div>
+          <div class="label"><span class="todo">Second metric — adoption, time saved, volume</span></div>
+        </div>
+        <div>
+          <div class="num"><span class="todo">XX</span></div>
+          <div class="label"><span class="todo">Third metric, or replace with a customer quote</span></div>
+        </div>
+      </div>
+      <p class="small muted" style="margin-top:1.4em"><span class="todo">One honest caveat about the numbers — what they don't capture, or what you'd measure differently. Saying this unprompted builds enormous credibility.</span></p>
+      <aside class="notes">
+        Know how each number was measured — sample, timeframe, denominator. "How did you
+        measure that?" is a near-certain follow-up.
+      </aside>
+    </section>
+
+    <!-- 10 · What I'd do differently -->
+    <section data-section="learnings">
+      <p class="kicker">Retrospective</p>
+      <h2>What I'd do differently</h2>
+      <ul>
+        <li><span class="todo">Something real, with the cost it had — not a humblebrag like "moved too fast"</span></li>
+        <li><span class="todo">A second one, ideally about people or process rather than tech</span></li>
+      </ul>
+      <aside class="notes">
+        Pick regrets you've genuinely metabolized — you should be able to say what you now
+        do differently because of each one.
+      </aside>
+    </section>
+
+    <!-- 11 · What I took from it -->
+    <section data-section="learnings">
+      <p class="kicker">Retrospective</p>
+      <h2>What I took from it</h2>
+      <ul>
+        <li><span class="todo">Learning #1 — transferable, specific to this project's evidence</span></li>
+        <li><span class="todo">Learning #2</span></li>
+      </ul>
+      <p style="margin-top:2em" class="muted">Happy to go deeper on any of it.</p>
+      <aside class="notes">
+        End here and stop talking. Let the interviewer choose the thread. Have three
+        "deeper dives" ready: one technical, one stakeholder story, one metric deep-dive.
+      </aside>
+    </section>
+
+  </div>
+</div>
+
+<!-- footer: section rail + slide count -->
+<div class="deck-footer">
+  <div class="rail">
+    <span data-rail="context">Context</span><span data-rail="problem">Problem</span><span data-rail="approach">Approach</span><span data-rail="outcomes">Outcomes</span><span data-rail="learnings">Learnings</span>
+  </div>
+  <div class="page"><span id="page-now">1</span> / <span id="page-total">–</span></div>
+</div>
+
+<script src="lib/reveal/reveal.js"></script>
+<script src="lib/reveal/plugin/notes/notes.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    transition: 'none',
+    center: false,
+    width: 1100,
+    height: 700,
+    margin: 0.08,
+    controls: false,
+    plugins: [ RevealNotes ]
+  });
+
+  // keep the footer rail + page count in sync with the current slide
+  const railSpans = document.querySelectorAll('.deck-footer [data-rail]');
+  function syncFooter (event) {
+    const slide = event ? event.currentSlide : Reveal.getCurrentSlide();
+    const section = slide.dataset.section;
+    railSpans.forEach(s => s.classList.toggle('on', s.dataset.rail === section));
+    document.getElementById('page-now').textContent = Reveal.getSlidePastCount() + 1;
+    document.getElementById('page-total').textContent = Reveal.getTotalSlides();
+  }
+  Reveal.on('ready', syncFooter);
+  Reveal.on('slidechanged', syncFooter);
+</script>
+
+</body>
+</html>
