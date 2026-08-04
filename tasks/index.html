@@ -186,12 +186,11 @@
           <p style="margin:0.5em 0 0; font-family:var(--sans); color:var(--muted)">A row means unread: inserted per recipient on new activity, cleared when the task is viewed. Deleted rows stay auditable via the temporal table. <span class="todo">exact schema unconfirmed</span></p>
         </div>
       </div>
-      <ul class="small" style="margin-top:1em">
-        <li>The assignee owns the task; recipients can see and follow it</li>
-        <li>Groups like Nursing resolve to individual recipients at send time via a role-to-user mapping. <span class="todo">confirm modeling + what happens when membership changes later</span></li>
-      </ul>
       <aside class="notes">
-        PREP: "why is Notifications a separate table from Recipients?" — the exact
+        Say aloud while pointing: the assignee owns the task, recipients see and
+        follow it; groups like Nursing resolve to individual recipients at send time
+        via the role-to-user mapping (confirm what happened when membership changed
+        later). PREP: "why is Notifications a separate table from Recipients?" — the exact
         schema is uncertain; the plausible lifecycle given the design: a row inserted
         per recipient when a task (or message) arrives, row-existence meaning "unread,"
         cleared on view — with the temporal table preserving even deleted rows for
