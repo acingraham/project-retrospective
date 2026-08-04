@@ -11,6 +11,9 @@ work=$(mktemp -d)
 cp -R "$root/tasks/." "$work/"
 touch "$work/.nojekyll"
 
+# never publish private prep/worksheet material
+rm -f "$work/PREP.md" "$work/CONTENT.md"
+
 python3 - "$work/index.html" <<'PY'
 import re, sys
 path = sys.argv[1]
