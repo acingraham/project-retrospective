@@ -1,45 +1,58 @@
-# Interview prep — questions the deck invites that need YOUR answers
+# Interview prep — adversarial questions the deck must survive
 
-A mock interview panel generated the hardest questions this deck provokes. Nine of
-ten had gaps the deck can't cover — the material must come from your memory. Write
-answers here (or just rehearse them); none of this appears in the published deck.
+NOTE: this file is excluded from the published site, but the repo is PUBLIC —
+don't write real answers here unless the repo goes private. Rehearse elsewhere.
 
-1. **"What was the system-design strategy the senior engineer shared?"** (slide 11)
-   The deck's biggest teaser, on the closing slide. One or two sentences + a
-   60-second worked example from Tasks.
+Amber TODOs in the deck mark facts to confirm before presenting: project dates,
+the real MVP cut list, the near-realtime mechanism, inbox indexes, group
+membership semantics, temporal-history specifics, refresh scope, one
+plan-divergence example, one pre-mortem risk, and concrete adoption evidence.
 
-2. **"Walk me through the disagreement with the engineer you'd given ownership to."**
-   (slides 7/10/11) What the design dispute was, what you actually did, how it
-   ended, the relationship after.
+## Scale and performance
+1. What was the expected and actual scale (practices, users, tasks/week)?
+2. Why did the project require 6–8 months?
+3. How was the inbox indexed and paginated, and how did it perform?
+4. What would break first at 10× scale?
+5. Why was no dedicated messaging platform or event-driven architecture needed?
 
-3. **"Why was history across four temporal tables so hard, and what would you use
-   instead?"** (slides 7/10) The mechanics of the pain, and the alternative design
-   you'd now choose (e.g. explicit activity log at mutation time, temporal tables
-   kept for audit only — if that's what you'd actually say).
+## Architecture mechanics
+6. How did near-real-time updates work (polling, SignalR, other)? What latency?
+7. How were notifications delivered reliably, and why a separate Notifications table?
+8. Why is assignee separate from recipients?
+9. How were groups modeled, and what happened when membership changed after send?
+10. How was access to patient-linked tasks authorized? Cross-practice isolation?
+11. What happened during concurrent edits?
+12. What happened when a user was deactivated?
+13. How were notifications and task state kept consistent?
 
-4. **"Near-realtime how?"** (slides 2/5) The actual delivery mechanism — polling
-   interval? push? — and typical latency, given refresh-on-change.
+## The two deep dives
+14. Why temporal tables instead of an append-only activity log from the start?
+15. How was history reconstructed across four temporal tables? Was timestamp
+    ordering sufficient? What downstream bugs resulted?
+16. What data was refreshed after a mutation — whole inbox or affected resources?
+17. How did multiple open sessions stay consistent? Any flicker or stale-data issues?
+18. Was a server-state library (e.g. React Query) available at the time? Why Redux
+    as the main alternative?
 
-5. **"Six months to first reported bug — what did QA and monitoring look like?"**
-   (slide 9) The detection story: testing approach, review practices, error
-   monitoring, defects caught internally pre-GA.
+## Decisions and scope
+19. Why not migrate legacy tasks asynchronously after launch?
+20. How long did the two systems coexist? Did the sunset complete? Holdouts?
+21. Did old and new tasks share one inbox? How did users know which system to use?
+22. What concrete scope was cut for MVP, and what rule decided it?
+23. Which beyond-MVP features shipped, before and after GA?
+24. What would you redesign without the contractual deadline?
 
-6. **"What specifically did you cut for MVP?"** (slides 3/5) 2–3 concrete cuts by
-   name, one tempting cut you kept, and the rule used to decide.
+## Evidence and quality
+25. What evidence demonstrates high adoption?
+26. How would you know whether users experienced unreported bugs?
+27. What exactly did the feature flag control, and what was the rollback process?
+28. What was the most serious pre-mortem risk, and how was it mitigated?
 
-7. **"Did the legacy sunset actually complete?"** (slide 6) The true end state —
-   how many practices were off legacy when you left; what happened with holdouts.
+## Leadership
+29. What technical work did you personally implement?
+30. What design did the other engineer advocate, why did you disagree, how was it
+    decided, and how did they keep meaningful ownership afterward?
 
-8. **"What exactly was broken about legacy Tasking?"** (slide 3) 2–3 specific
-   failure modes, and how the new design avoided repeating them.
-
-9. **"Sequencing everything up front sounds like waterfall — when was the plan
-   wrong?"** (slide 8) One concrete example of divergence and correction.
-
-Fully prepared already (per the panel): "why run both systems instead of
-migrating, and how did you keep dual support from eating the team?"
-
-Also confirm two on-slide claims are ones you'd own under follow-up:
-- Slide 10's remedies ("prototype the hardest read path first"; "agree decision
-  rights at handoff") — have you actually done these since?
-- Slide 4's "where was product?" — know your counterparts and the ownership split.
+Plus the closing-slide near-certainty: **"what is the planning/design process you
+synthesized and taught?"** — one or two sentences, then a 60-second worked
+example from Tasks.
