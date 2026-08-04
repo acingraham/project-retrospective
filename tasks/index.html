@@ -13,20 +13,52 @@
 <div class="reveal">
   <div class="slides">
 
-    <!-- 1 · Title and outcome -->
-    <section data-section="context">
-      <p class="kicker">Project retrospective · Flatiron Health</p>
-      <h1 style="margin-bottom:0.35em">Tasks</h1>
-      <iframe class="demo-frame" style="height:480px" data-src="prototypes/oncoemr-tasks.html#inbox/clean"></iframe>
-      <p class="small muted" style="margin-top:0.4em; font-size:0.55em">* The demos in this deck are approximations of the feature</p>
-      <aside class="notes">
-        Introduce yourself out loud: name, Senior Software Engineer, project lead for
-        this work. One-liner: "Tasks is how staff at an oncology practice route work to
-        each other inside the EHR — near-realtime messaging tied to patients and
-        orders." The live inbox is on screen behind the intro; poke at it briefly if it
-        helps (filters, sorting, bulk actions — the recovered MVP cut), then move on.
-        Click outside the demo to give arrow keys back to the deck.
-      </aside>
+    <!-- 1 · Title stack: cover with demos as vertical slides -->
+    <section>
+      <section data-section="context">
+        <p class="kicker">Project retrospective · Flatiron Health</p>
+        <h1 style="margin-bottom:0.35em">Tasks</h1>
+        <iframe class="demo-frame" style="height:480px" data-src="prototypes/oncoemr-tasks.html#inbox/clean"></iframe>
+        <p class="small muted" style="margin-top:0.4em; font-size:0.55em">* The demos in this deck are approximations of the feature</p>
+        <aside class="notes">
+          Introduce yourself out loud: name, Senior Software Engineer, project lead for
+          this work. One-liner: "Tasks is how staff at an oncology practice route work to
+          each other inside the EHR — near-realtime messaging tied to patients and
+          orders." The live inbox is on screen behind the intro; poke at it briefly if it
+          helps (filters, sorting, bulk actions — the recovered MVP cut), then move on.
+          The other demo screens are below: arrow down for task detail, compose, and the
+          patient chart. Click outside the demo to give arrow keys back to the deck.
+        </aside>
+      </section>
+      <section data-section="demo">
+        <p class="kicker">Demo · 1 of 3</p>
+        <h2 class="demo-h">Task detail and history</h2>
+        <iframe class="demo-frame" data-src="prototypes/oncoemr-tasks.html#task/clean"></iframe>
+        <aside class="notes">
+          Task detail — point at the unified history feed: this innocent-looking list is
+          what the temporal-tables deep dive is about. Add a message to show the
+          append-only thread.
+        </aside>
+      </section>
+      <section data-section="demo">
+        <p class="kicker">Demo · 2 of 3</p>
+        <h2 class="demo-h">Composing a task</h2>
+        <iframe class="demo-frame" data-src="prototypes/oncoemr-tasks.html#compose/clean"></iframe>
+        <aside class="notes">
+          Composing — recipients including groups (Nursing → resolved at send time),
+          urgency, and linking to a patient or order.
+        </aside>
+      </section>
+      <section data-section="demo">
+        <p class="kicker">Demo · 3 of 3</p>
+        <h2 class="demo-h">In the patient chart</h2>
+        <iframe class="demo-frame" data-src="prototypes/oncoemr-tasks.html#chart/clean"></iframe>
+        <aside class="notes">
+          The payoff of entity association: the patient chart surfaces this patient's
+          tasks inside the treatment workflow — tasks meet clinicians where they already
+          are.
+        </aside>
+      </section>
     </section>
 
     <!-- 2 · User workflow and requirements -->
@@ -82,37 +114,6 @@
         practice. PREP, near-guaranteed: "what is that practice?" Have it in one or
         two sentences plus a worked example from Tasks. Don't tease it twice without
         being able to state it once.
-      </aside>
-    </section>
-
-    <!-- Demo · interactive prototype, one screen per slide -->
-    <section data-section="demo">
-      <p class="kicker">Demo · 1 of 3</p>
-      <h2 class="demo-h">Task detail and history</h2>
-      <iframe class="demo-frame" data-src="prototypes/oncoemr-tasks.html#task/clean"></iframe>
-      <aside class="notes">
-        Task detail — point at the unified history feed: this innocent-looking list is
-        what the temporal-tables deep dive is about. Add a message to show the
-        append-only thread.
-      </aside>
-    </section>
-    <section data-section="demo">
-      <p class="kicker">Demo · 2 of 3</p>
-      <h2 class="demo-h">Composing a task</h2>
-      <iframe class="demo-frame" data-src="prototypes/oncoemr-tasks.html#compose/clean"></iframe>
-      <aside class="notes">
-        Composing — recipients including groups (Nursing → resolved at send time),
-        urgency, and linking to a patient or order.
-      </aside>
-    </section>
-    <section data-section="demo">
-      <p class="kicker">Demo · 3 of 3</p>
-      <h2 class="demo-h">In the patient chart</h2>
-      <iframe class="demo-frame" data-src="prototypes/oncoemr-tasks.html#chart/clean"></iframe>
-      <aside class="notes">
-        The payoff of entity association: the patient chart surfaces this patient's
-        tasks inside the treatment workflow — tasks meet clinicians where they already
-        are.
       </aside>
     </section>
 
@@ -404,6 +405,46 @@
         concrete story and resolution ready). Three deep-dive pockets: temporal
         tables, the legacy sunset, the sequencing system.
       </aside>
+    </section>
+
+    <!-- 15 · Closing stack: cover again, demos below for Q&A -->
+    <section>
+      <section data-section="context">
+        <p class="kicker">Project retrospective · Flatiron Health</p>
+        <h1 style="margin-bottom:0.35em">Tasks</h1>
+        <iframe class="demo-frame" style="height:480px" data-src="prototypes/oncoemr-tasks.html#inbox/clean"></iframe>
+        <p class="small muted" style="margin-top:0.4em; font-size:0.55em">* The demos in this deck are approximations of the feature</p>
+        <aside class="notes">
+          Closing screen: the product stays up during Q&amp;A. Arrow down to pull up any
+          demo on request — task detail, compose, patient chart. Click outside the demo
+          to give arrow keys back to the deck.
+        </aside>
+      </section>
+      <section data-section="demo">
+        <p class="kicker">Demo · 1 of 3</p>
+        <h2 class="demo-h">Task detail and history</h2>
+        <iframe class="demo-frame" data-src="prototypes/oncoemr-tasks.html#task/clean"></iframe>
+        <aside class="notes">
+          Task detail — the unified history feed, the visible artifact of the
+          temporal-tables story.
+        </aside>
+      </section>
+      <section data-section="demo">
+        <p class="kicker">Demo · 2 of 3</p>
+        <h2 class="demo-h">Composing a task</h2>
+        <iframe class="demo-frame" data-src="prototypes/oncoemr-tasks.html#compose/clean"></iframe>
+        <aside class="notes">
+          Composing — group recipients resolved at send time, urgency, entity linking.
+        </aside>
+      </section>
+      <section data-section="demo">
+        <p class="kicker">Demo · 3 of 3</p>
+        <h2 class="demo-h">In the patient chart</h2>
+        <iframe class="demo-frame" data-src="prototypes/oncoemr-tasks.html#chart/clean"></iframe>
+        <aside class="notes">
+          The patient chart — tasks surfaced inside the treatment workflow.
+        </aside>
+      </section>
     </section>
 
   </div>
