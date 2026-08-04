@@ -245,17 +245,20 @@
       <h2>Temporal tables made audit easy and history hard</h2>
       <ul class="small">
         <li><strong>Why they looked right:</strong> built-in row versioning, near-zero implementation cost, strong audit support, a familiar SQL Server capability.</li>
-        <li><strong>The failure mode:</strong> one user action (reassign, add a recipient, change status, post a message) lands as independent version rows in four tables. Building product history meant merging four version streams into one ordered, human-readable timeline. <span class="todo">confirm the specifics: ordering approach, worst downstream bugs</span></li>
+        <li><strong>The failure mode:</strong> one user action (reassign, add a recipient, change status, post a message) lands as independent version rows in four tables. Building product history meant merging four version streams into one ordered, human-readable timeline, regenerated every time a task detail was viewed. <span class="todo">confirm the specifics: ordering approach, worst downstream bugs</span></li>
         <li><strong>What I'd build today:</strong> temporal tables for compliance and forensics, plus a separate append-only activity log, written at mutation time, for user-facing history.</li>
       </ul>
       <p class="small muted" style="margin-top:0.6em">The lesson: audit history and product-facing activity history have different consumers and different semantics, so one storage mechanism shouldn't serve both.</p>
       <aside class="notes">
         The deck's central technical lesson — take time here. Walk the concrete scenario
-        slowly; it's what makes the lesson land. Confirmed detail that strengthens the
-        story: the MVP assembled the history timeline on the FRONTEND from the raw
-        version streams, and doing it properly on the backend was one of the agreed
-        post-MVP fixes (slide 4). That's a vivid way to show the cost the temporal
-        choice pushed downstream. PREP: be ready for "was timestamp ordering
+        slowly; it's what makes the lesson land. Confirmed details that strengthen the
+        story: history was never materialized, it was regenerated on every task-detail
+        view, and the MVP did that assembly on the FRONTEND from the raw version
+        streams; doing it properly on the backend was one of the agreed post-MVP fixes
+        (slide 4). Together these state the cost profile plainly: the temporal choice
+        turned every task open into a four-stream merge. The append-only activity log
+        you'd build today inverts that tradeoff (write-once, read-cheap), which is the
+        crisp way to close the lesson. PREP: be ready for "was timestamp ordering
         sufficient?", "how did you attribute row changes to user-facing events?",
         "how did pagination of history perform?" — reconstruct as much as you can from
         memory beforehand.
