@@ -126,6 +126,7 @@
           <ul class="small">
             <li>Bulk task edits</li>
             <li>Integrated frontend state, instead of refetching on change</li>
+            <li>History generation done properly on the backend (the MVP assembled it on the frontend)</li>
             <li>Table indexes</li>
             <li>In-app notifications</li>
             <li>Styling improvements, of which there were many</li>
@@ -250,8 +251,12 @@
       <p class="small muted" style="margin-top:0.6em">The lesson: audit history and product-facing activity history have different consumers and different semantics, so one storage mechanism shouldn't serve both.</p>
       <aside class="notes">
         The deck's central technical lesson — take time here. Walk the concrete scenario
-        slowly; it's what makes the lesson land. PREP: be ready for "was timestamp
-        ordering sufficient?", "how did you attribute row changes to user-facing events?",
+        slowly; it's what makes the lesson land. Confirmed detail that strengthens the
+        story: the MVP assembled the history timeline on the FRONTEND from the raw
+        version streams, and doing it properly on the backend was one of the agreed
+        post-MVP fixes (slide 4). That's a vivid way to show the cost the temporal
+        choice pushed downstream. PREP: be ready for "was timestamp ordering
+        sufficient?", "how did you attribute row changes to user-facing events?",
         "how did pagination of history perform?" — reconstruct as much as you can from
         memory beforehand.
       </aside>
