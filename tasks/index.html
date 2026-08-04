@@ -203,20 +203,19 @@
         </div>
         <div class="ent"><div class="name">Notifications</div>
           <ul><li>taskId</li><li>recipientId</li><li>createdAt?</li></ul>
-          <p style="margin:0.5em 0 0; font-family:var(--sans); color:var(--muted)">A row means unread: inserted per recipient on new activity, cleared when the task is viewed. Deleted rows stay auditable via the temporal table. <span class="todo">exact schema unconfirmed</span></p>
         </div>
       </div>
       <aside class="notes">
         Say aloud while pointing: the assignee owns the task, recipients see and
         follow it; groups like Nursing resolve to individual recipients at send time
         via the role-to-user mapping (confirm what happened when membership changed
-        later). PREP: "why is Notifications a separate table from Recipients?" — the exact
-        schema is uncertain; the plausible lifecycle given the design: a row inserted
-        per recipient when a task (or message) arrives, row-existence meaning "unread,"
-        cleared on view — with the temporal table preserving even deleted rows for
-        audit. Verify against memory before presenting it as fact; if it stays fuzzy,
-        say "the notification schema I don't recall precisely" and pivot to what you do
-        know. "What happens to tasks when a user is deactivated?" — confirmed: a
+        later). Notifications lifecycle to narrate: a row per recipient on new
+        activity, row-existence meaning "unread," and (best recollection) cleared for
+        that user and task on read — with the temporal table preserving even deleted
+        rows for audit. The clear-on-read part is remembered; the insert side and
+        createdAt are inferred, so present them as "the shape of the design." If asked
+        "why a separate table from Recipients": Recipients is durable membership,
+        Notifications is transient signaling. "What happens to tasks when a user is deactivated?" — confirmed: a
         cronjob swept for old and orphaned tasks; a task could be orphaned when
         everyone associated with it had left the organization. Good edge-case story:
         it shows the design anticipated organizational churn, not just happy-path
