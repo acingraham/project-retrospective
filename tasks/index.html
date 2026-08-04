@@ -16,25 +16,25 @@
     <!-- 1 · Title and outcome -->
     <section data-section="context">
       <p class="kicker">Project retrospective · Flatiron Health</p>
-      <h1 style="font-size:1.9em">Replacing a legacy EHR tasking system under a contractual deadline</h1>
-      <p class="muted" style="margin-top:1em">Led a team of 4–5 engineers (me included) over roughly 6–8 months. We delivered a high-risk replacement on time by constraining scope, running alongside the legacy system instead of migrating, and rolling out incrementally.</p>
-      <p class="small muted" style="margin-top:2.5em">Andrew Ingraham · Senior Software Engineer, project lead</p>
+      <h1>Tasks</h1>
+      <p class="muted" style="margin-top:1em">How a five-person team replaced OncoEMR's broken but heavily used tasking feature on a contractual deadline: what we built, the calls I made, and what I'd do differently today.</p>
       <aside class="notes">
-        One-liner first: "Tasks is how staff at an oncology practice route work to each
-        other inside the EHR — near-realtime messaging tied to patients and orders."
-        The title already states the outcome; the deck's job is to defend how.
+        Introduce yourself out loud instead of on the slide: name, Senior Software
+        Engineer, project lead for this work. Then the one-liner: "Tasks is how staff
+        at an oncology practice route work to each other inside the EHR — near-realtime
+        messaging tied to patients and orders."
       </aside>
     </section>
 
     <!-- 2 · Stakes and constraints -->
     <section data-section="context">
       <p class="kicker">Stakes &amp; constraints</p>
-      <h2>Why this wasn't just a CRUD feature</h2>
+      <h2>Tasks</h2>
       <ul class="small">
-        <li>One of the ten most requested product changes for a long stretch, and highly visible inside the company.</li>
+        <li>One of the top 10 most requested features across the organization for years.</li>
+        <li>A contractual obligation to deliver to a subset of practices by a fixed date, with significant business cost if we missed the deadline.</li>
         <li>A legacy Tasking feature that was badly broken but still actively used: the replacement had to be a functional superset, transitioned without breaking live clinical workflows.</li>
-        <li>A contractual obligation to deliver to a subset of practices by a fixed date, with significant business cost to a miss.</li>
-        <li>3–4 engineers besides me, in one of two work-streams. The other stream was carrying an EHR certification with its own immovable deadline, so people had to stay movable between the two.</li>
+        <li>Our team was made up of ~8 engineers divided loosely across 2 work streams. I was leading the work stream working on Tasks while the other work stream was working on meeting a major EHR certification with its own immovable deadline.</li>
       </ul>
       <aside class="notes">
         Every design decision that follows traces back to these four constraints; name that
@@ -46,8 +46,15 @@
     <!-- 3 · User workflow and requirements -->
     <section data-section="context">
       <p class="kicker">The feature</p>
-      <h2>One task, end to end</h2>
-      <div class="flow">
+      <h2>What a task is</h2>
+      <ul class="small">
+        <li>Near-realtime messaging between users within a practice, organized as tasks.</li>
+        <li>Each task has a subject, description, status, urgency, due date, an assignee, and recipients. Recipients can be individuals or a group like Nursing.</li>
+        <li>Tasks arrive in an inbox with pagination, sorting, and filtering, and users are notified when they receive one.</li>
+        <li>A task can be linked to a patient or an order, and linked tasks surface on those pages.</li>
+        <li>Every task keeps its full history, both for users and for auditing.</li>
+      </ul>
+      <div class="flow" style="margin-top:1em">
         <span class="step">Create task</span><span class="arrow">→</span>
         <span class="step">Resolve recipients<br><span class="muted">direct or group (e.g. Nursing)</span></span><span class="arrow">→</span>
         <span class="step">Notify users</span><span class="arrow">→</span>
@@ -55,11 +62,10 @@
         <span class="step">Update status</span><span class="arrow">→</span>
         <span class="step">History retained<br><span class="muted">activity + audit</span></span>
       </div>
-      <p class="small muted">Also required: an inbox with pagination, sorting, and filtering · optional association to patients and orders, surfaced wherever those entities appear · near-realtime delivery.</p>
       <aside class="notes">
-        Fields, if asked: subject, description, status, urgency, due date, assignee,
-        recipients. Keep this under a minute — it exists so the architecture slide has
-        something concrete to carry.
+        Keep this under a minute; the demos that follow show all of it live. The flow
+        strip at the bottom is the lifecycle you'll walk in the demo: create, resolve
+        recipients, notify, collaborate, update status, history.
       </aside>
     </section>
 
