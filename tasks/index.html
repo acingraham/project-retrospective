@@ -160,15 +160,15 @@
         say "the notification schema I don't recall precisely" and pivot to what you do
         know. "What happens to tasks when a user is deactivated?" — have the real
         answer or say it plainly if you don't recall.
-        PREP, concurrency: races were handled; mechanism partly unremembered. The
-        plausible-for-this-stack answers: one transaction around task + recipients +
-        notifications writes (no partial states); optimistic concurrency on editable
-        rows — rowversion or updatedAt check on UPDATE, loser refetches, which is the
-        same code path as refresh-on-change; unique (taskId, recipientId) constraint
-        making notification inserts idempotent; messages append-only, so no edit
-        contention there at all. If the token type won't come back: "optimistic
-        concurrency semantics; I don't recall whether the token was rowversion or the
-        timestamp" is a fine answer.
+        Concurrency (confirmed): multi-table writes wrapped in one transaction (no
+        partial states), and optimistic concurrency on edits — the update failed if
+        the task had changed since it was read, and the client refetched, which is
+        the same code path as refresh-on-change. The transaction gave atomicity; the
+        stale-read rejection prevented lost updates — name them as solving different
+        problems. Messages were append-only, so the thread had no edit contention.
+        Still unremembered: the token (rowversion vs. updatedAt) — "I don't recall
+        which" is fine — and whether notification inserts were deduped by a unique
+        (taskId, recipientId) constraint.
       </aside>
     </section>
 
