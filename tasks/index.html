@@ -238,15 +238,18 @@
       <h2>Coexist with legacy, don't migrate</h2>
       <div class="tradeoff">
         <div class="cell"><div class="t">Alternatives</div>One-time migration of legacy tasks; or patch the legacy feature in place.</div>
-        <div class="cell"><div class="t">Chosen</div>Run both systems. Each practice agreed a sunset date for legacy, enforced by feature flag: enable the new system, monitor legacy usage, disable legacy creation, then turn it off.</div>
+        <div class="cell"><div class="t">Chosen</div>Run both systems. Each practice agreed a sunset date for legacy, enforced by feature flag: enable the new system, monitor legacy usage, disable creation of new legacy tasks while still allowing updates to existing ones, then disable legacy editing altogether.</div>
         <div class="cell"><div class="t">Benefit / cost</div>Migration risk came off the critical path entirely. In exchange we took on dual support and had to actively nudge practices off the old system.</div>
       </div>
       <aside class="notes">
         This is a controlled-coexistence strategy, not migration avoidance — say it that
-        way. PREP: "did the sunset actually complete?" Know the true end state; if it was
-        mid-rollout when you left, say so. Also: "why not migrate asynchronously after
-        launch?", "did old and new tasks share an inbox?", "how did users know which to
-        use?" — have real answers or honest ones.
+        way. The graduated wind-down is confirmed and worth emphasizing: creation
+        disabled first with edits to existing tasks still allowed (no one's in-flight
+        work breaks), then editing disabled altogether. That two-step is what made the
+        sunset humane. PREP: "did every practice complete the sunset?" Know the true
+        end state; if it was mid-rollout when you left, say so. Also: "why not migrate
+        asynchronously after launch?", "did old and new tasks share an inbox?", "how
+        did users know which to use?" — have real answers or honest ones.
       </aside>
     </section>
 
