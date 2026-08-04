@@ -351,7 +351,7 @@
           <div class="label">before the first customer-reported defect</div>
         </div>
       </div>
-      <p class="small muted" style="margin-top:1.4em">Adoption and NPS were high but I don't have the exact figures</p>
+      <p class="small muted" style="margin-top:4em; font-size:0.55em">* Adoption and NPS were high but I don't have the exact figures</p>
       <aside class="notes">
         Lead with the contractual delivery — it's the claim with the most evidence behind
         it. Honest caveat to volunteer on the defect stat: the intentionally constrained
@@ -386,22 +386,23 @@
     <!-- 14 · Reflection -->
     <section data-section="reflection">
       <p class="kicker">Reflection</p>
-      <h2>Three lessons I still use</h2>
-      <ol class="small">
-        <li>Separate audit storage from user-facing activity history. They have different consumers and need different designs.</li>
-        <li>Define architectural decision rights before delegating implementation ownership, so disagreement surfaces during design review instead of after someone has sunk weeks into an approach</li>
-        <li>Sequence the whole project up front to expose the critical path, then keep revising scope and estimates against it as reality comes in</li>
-      </ol>
-      <p class="small muted" style="margin-top:1em">Before starting, I interviewed several senior engineers about how they decomposed large projects, and synthesized that into the planning and design process I used here and have since taught to other teams.</p>
+      <h2>Lessons I still use</h2>
+      <ul class="small">
+        <li>How to approach project planning and system design with a team</li>
+        <li>The value of unearthing unknowns and decisions early along with project planning and sequencing</li>
+        <li>Adjusting project presentation (especially timelines) based on the audience</li>
+        <li>How to approach technical disagreements with SWEs who are heavily invested in their solution</li>
+      </ul>
       <p style="margin-top:1.6em" class="muted">Happy to go deeper on any of it.</p>
       <aside class="notes">
-        Stop talking after the closing line. PREP, near-guaranteed: "what is that
-        process?" — one or two sentences plus a 60-second worked example from Tasks,
-        written down before any interview. Fourth lesson if the conversation invites it:
-        adapting communication style to the audience — execs, practices, and engineers
-        each got a different version of the same status. Three deep-dive pockets:
-        temporal tables (slide 8), the legacy sunset (slide 7), the sequencing system
-        (slide 10).
+        Stop talking after the closing line. Each bullet maps to earlier material:
+        planning and design with a team (Approach and Execution slides, plus the
+        near-guaranteed "what is that practice?" question — have it in one breath);
+        unknowns early (the derisking thesis); audience-based presentation — have an
+        example of how you presented timelines differently to execs vs. practices vs.
+        engineers; technical disagreements (the What went badly slide — have the
+        concrete story and resolution ready). Three deep-dive pockets: temporal
+        tables, the legacy sunset, the sequencing system.
       </aside>
     </section>
 
