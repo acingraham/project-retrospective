@@ -32,13 +32,15 @@
       <h2>Where Tasks sits</h2>
       <ul>
         <li>Flatiron Health builds software for community oncology, including OncoEMR — the electronic health record these practices run on.</li>
-        <li>Tasks lets practice staff message each other in near-realtime about work that needs doing: subject, status, urgency, due date, assignee, recipients — with an inbox, notifications, and the ability to send to a group like Nursing rather than naming individuals.</li>
-        <li>A task can optionally be attached to an entity like a patient or an order — and then surfaces wherever that entity appears in the EHR.</li>
+        <li>Tasks lets practice staff message each other in near-realtime about work that needs doing, with an inbox, notifications, and group sends to teams like Nursing.</li>
+        <li>A task can optionally be attached to an entity like a patient or an order, and then surfaces wherever that entity appears in the EHR.</li>
       </ul>
       <aside class="notes">
         45 seconds max. If asked "why does an EHR need this": clinical work is handoffs —
         a physician flags something, nursing follows up, front desk schedules. Before Tasks
         that coordination lived in workarounds outside the system of record.
+        Fields, if asked: subject, description, status, urgency, due date, assignee,
+        recipients.
       </aside>
     </section>
 
@@ -49,13 +51,16 @@
       <ul>
         <li>In-EHR tasking sat in our top 10 most requested changes for an extended period.</li>
         <li>A legacy Tasking feature existed but was badly broken — yet some practices still depended on it, so we couldn't just remove it. Anything new had to be a functional superset.</li>
-        <li>Why now: we were contractually obligated to deliver to a subset of practices by a fixed date. The deadline was immovable and the miss cost was heavy.</li>
+        <li>Why now: we were contractually committed to deliver to a subset of practices by a fixed date.</li>
       </ul>
       <aside class="notes">
         Likely follow-ups: "How did you know it was the right problem?" — sustained top-10
         demand plus a contractual commitment made prioritization unusually clear; the real
-        judgment calls were in scoping, not selection. "What did you deprioritize?" — the
-        honest answer is the MVP cut itself: everything non-essential moved post-GA.
+        judgment calls were in scoping, not selection. "What did you deprioritize?" —
+        answer with the concrete MVP cuts (prep on slide 5). PREP: "what exactly was broken
+        about legacy Tasking?" needs 2–3 specific failure modes from memory, and how the
+        new design addressed each — this also underpins build-over-patch. Only claim to
+        know the contractual miss cost if you actually do.
       </aside>
     </section>
 
@@ -75,7 +80,7 @@
           <p class="col-label">The team</p>
           <ul class="small">
             <li>A team of ~8 engineers split into two loose work-streams, so people could be reallocated as needed. I led the Tasks work-stream: 3–4 engineers besides me.</li>
-            <li>The catch: the other work-stream was an EHR certification with its own immovable deadline — flexibility on paper, contention in practice.</li>
+            <li>The catch: the other work-stream was an EHR certification with its own immovable deadline, so in practice people were hard to move.</li>
           </ul>
         </div>
       </div>
@@ -84,6 +89,9 @@
         the build. If asked about the work-stream tension: both deadlines were contractual
         or regulatory, so reallocation was a last resort — which raised the price of any
         slip and pushed me toward the risk-minimizing choices that follow.
+        PREP: "where was product on a contractual, customer-facing feature?" — name your
+        actual counterparts and the split (technical scoping and sequencing vs. customer
+        commitments and requirements). Volunteering the partnership strengthens the story.
       </aside>
     </section>
 
@@ -92,16 +100,20 @@
       <p class="kicker">Approach</p>
       <h2>The bets we made</h2>
       <ol>
-        <li><strong>Cut to a genuine MVP.</strong> Every scope decision optimized for the contractual date — but cut in a way that wasted no effort, so features could layer on cleanly after.</li>
+        <li><strong>Cut to a genuine MVP.</strong> Every scope decision optimized for the contractual date, cut in a way that wasted no effort so features could layer on cleanly after.</li>
         <li><strong>Don't migrate legacy tasks.</strong> Run old and new side by side, and sunset legacy per practice behind a feature flag.</li>
-        <li><strong>Spend nothing on novelty.</strong> A deliberately boring stack — C#/VB, React, SQL Server — and refresh-on-change instead of clever frontend state.</li>
+        <li><strong>Keep it boring.</strong> Plain use of the existing stack (C#/VB, React, SQL Server) and refresh-on-change instead of clever frontend state. Four tables — Tasks, Messages, Recipients, Notifications — each with a temporal table behind it for history and audit.</li>
       </ol>
       <aside class="notes">
         Each bet has a road-not-taken to voice if asked: we could have patched the legacy
         feature (broken foundation, still bounded by it); we could have migrated data
         (next slide); we could have built rich Redux state (speed and bug-avoidance won).
-        Deep-dive pocket — the schema: Tasks, Messages, Recipients, Notifications tables,
-        each with a temporal table behind it for history and audit.
+        PREP, near-certain questions: (1) "What did you actually cut?" — have 2–3 concrete
+        MVP cuts by name, one tempting cut you kept, and the rule used to decide. "We cut
+        what was non-essential" is circular and will not survive. (2) "If the frontend
+        just refreshes, what makes it near-realtime?" — know the delivery mechanism
+        (polling interval? push?) and typical latency; if you no longer recall the exact
+        interval, say so plainly.
       </aside>
     </section>
 
@@ -127,24 +139,32 @@
         the sunset lever mattered because "temporary" dual systems become permanent without
         an enforcement mechanism; the per-practice flag made the end date real rather than
         aspirational.
+        PREP: "so did you actually turn the old one off?" comes first. Know the true end
+        state — how far the sunset had progressed when you left. If it was mid-rollout,
+        say that plainly; don't imply completion.
       </aside>
     </section>
 
     <!-- 7 · What got hard -->
     <section data-section="approach">
       <p class="kicker">What got hard</p>
-      <h2>History was harder than the schema suggested</h2>
+      <h2>Three things were harder than planned</h2>
       <ul>
-        <li>Temporal tables made auditing nearly free — but reconstructing a user-friendly task history across four temporally-versioned tables was a tremendous headache, with a tail of downstream issues.</li>
+        <li>Temporal tables made auditing nearly free, but reconstructing a user-friendly task history across four temporally-versioned tables was a tremendous headache, with a tail of downstream issues.</li>
         <li>Embedding the feature across the app meant landing React inside legacy Visual Basic pages, on top of pre-existing data fetching that was error-prone. We built a reusable data-fetching strategy that replaced the old patterns beyond our own feature.</li>
         <li>An engineer I'd given ownership to was committed to a design I disagreed with — navigating that without undermining the ownership I'd granted was its own project.</li>
       </ul>
       <aside class="notes">
         No villains — describe constraints, not people. On the disagreement: the tension was
         between honoring delegated ownership and holding the system design line; how I'd
-        handle it now is on the last slide. Optional extra example if asked for more: the
-        service mapping roles to users (for group sends like "Nursing") turned out to be
-        broken and needed fixing along the way.
+        handle it now is on the last slide. PREP, guaranteed follow-up: "how did it end?"
+        Have the concrete resolution ready in under a minute — what you actually did, what
+        shipped, and the working relationship after. PREP, technical deep-dive: be ready to
+        explain *why* history was hard (stitching one human-readable timeline out of four
+        separate version streams) and what you'd use instead — that design is the slide-10
+        claim. Optional extra example if asked for more: the service mapping roles to users
+        (for group sends like "Nursing") turned out to be broken and needed fixing along
+        the way.
       </aside>
     </section>
 
@@ -162,6 +182,9 @@
         waterfall plan, it was making parallelism safe — knowing at any moment whether the
         date was at risk, weeks before it became unrecoverable. The Gantt chart re-estimated
         as tickets closed, so "are we on track?" was a lookup, not a meeting.
+        PREP: "sounds like waterfall — tell me about a time the plan was wrong." Have one
+        concrete example of the plan diverging and being corrected (a blown estimate, a
+        resequencing, scope moving mid-flight); without it the reframe reads as theory.
       </aside>
     </section>
 
@@ -178,17 +201,17 @@
           <div class="num">On time</div>
           <div class="label">contractual practices live by the committed date — with room left to ship features beyond the MVP</div>
         </div>
-        <div>
-          <div class="num">High</div>
-          <div class="label">adoption and NPS among practices</div>
-        </div>
       </div>
-      <p class="small muted" style="margin-top:1.4em">The honest caveat: part of the quality story is a deliberately small surface area — the MVP cut did as much for reliability as the engineering did. The project was celebrated internally.</p>
+      <p class="small muted" style="margin-top:1.4em">Adoption and NPS were high — I no longer have the exact figures. One caveat: part of the quality story is a deliberately small surface area; the MVP cut did as much for reliability as the engineering did.</p>
       <aside class="notes">
         Say "first *reported* bug" precisely — it measures user-visible quality, not the
-        absence of defects. On adoption/NPS: you don't have the exact figures anymore —
-        say that plainly if asked ("both were high; I no longer have the exact numbers")
-        rather than guessing. A precise "I don't recall" reads better than a shaky number.
+        absence of defects. PREP: expect "zero reports means nobody was looking, or nobody
+        was using it." Rebuttal: staged rollout — bug bashes and pilot practices hammered
+        it before GA — plus high adoption during the measured window. Be ready to describe
+        the QA/review/monitoring setup from memory; careful wording alone won't hold.
+        On adoption/NPS: "both were high; I no longer have the exact numbers" — a precise
+        "I don't recall" beats a shaky number. If asked about reception: it was celebrated
+        internally — good spoken color, deliberately not an on-slide claim.
       </aside>
     </section>
 
@@ -201,9 +224,10 @@
         <li>On delegation: I'd establish how design decisions get made <em>before</em> handing over ownership, so disagreement surfaces as design review rather than as a standoff after someone is committed.</li>
       </ul>
       <aside class="notes">
-        Both regrets have a "what I now do differently": prototype the ugliest read path
-        first; agree decision rights at handoff. That's what makes them read as metabolized
-        rather than performed.
+        Before using these live, confirm each remedy is one you'd genuinely claim as your
+        practice now, and have a real example of applying it on a later project —
+        "have you actually done that since?" is the standard probe. If a remedy isn't
+        true for you, keep the diagnosis (which is yours) and drop the prescription.
       </aside>
     </section>
 
@@ -221,6 +245,10 @@
         Stop talking here; let them pick the thread. Three deep-dives ready: technical —
         temporal tables and the history read path; stakeholder — the practice-by-practice
         legacy sunset; process — the upfront sequencing and auto-adjusting Gantt chart.
+        PREP, near-guaranteed: "what was the strategy?" Write it down before any
+        interview — the strategy in one or two sentences plus a 60-second worked example
+        from Tasks. If you can't state it in one breath, soften the bullet so it prompts
+        rather than promises.
       </aside>
     </section>
 
