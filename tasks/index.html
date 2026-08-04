@@ -34,13 +34,13 @@
       <p class="kicker">The feature</p>
       <h2>What is a task?</h2>
       <ul class="small">
-        <li>Somewhere between an email and a Jira ticket.</li>
-        <li>Near-realtime messaging between users within a practice, organized as tasks.</li>
+        <li>Somewhere between an email and a Jira ticket</li>
+        <li>Near-realtime messaging between users within a practice, organized as tasks</li>
         <li>Each task has a subject, description, status, urgency, due date, an assignee, and recipients. Recipients can be individuals or a group like Nursing.</li>
-        <li>Tasks arrive in an inbox with search, pagination, sorting, and filtering, and users are notified when they receive one.</li>
-        <li>A task can be linked to a patient or an order.</li>
-        <li>Tasks are surfaced in a number of areas throughout the application, including on the pages of entities they're linked to.</li>
-        <li>Every task keeps its full history, both for users and for auditing.</li>
+        <li>Tasks arrive in an inbox with search, pagination, sorting, and filtering, and users are notified when they receive one</li>
+        <li>A task can be linked to a patient or an order</li>
+        <li>Tasks are surfaced in a number of areas throughout the application, including on the pages of entities they're linked to</li>
+        <li>Every task keeps its full history, both for users and for auditing</li>
       </ul>
       <aside class="notes">
         Keep this under a minute; the demos that follow show all of it live. The
@@ -54,9 +54,9 @@
       <p class="kicker">Stakes &amp; constraints</p>
       <h2>Additional context</h2>
       <ul class="small">
-        <li>One of the top 10 most requested features across the organization for years.</li>
-        <li>A contractual obligation to deliver to a subset of practices by a fixed date, with significant business cost if we missed the deadline.</li>
-        <li>A legacy Tasking feature that was badly broken but still actively used: the replacement had to be a functional superset, transitioned without breaking live clinical workflows.</li>
+        <li>One of the top 10 most requested features across the organization for years</li>
+        <li>A contractual obligation to deliver to a subset of practices by a fixed date, with significant business cost if we missed the deadline</li>
+        <li>A legacy Tasking feature that was badly broken but still actively used: the replacement had to be a functional superset, transitioned without breaking live clinical workflows</li>
         <li>Our team was made up of ~8 engineers divided loosely across 2 work streams. I was leading the work stream working on Tasks while the other work stream was working on meeting a major EHR certification with its own immovable deadline.</li>
       </ul>
       <aside class="notes">
@@ -186,7 +186,7 @@
         </div>
       </div>
       <ul class="small" style="margin-top:1em">
-        <li>The assignee owns the task; recipients can see and follow it.</li>
+        <li>The assignee owns the task; recipients can see and follow it</li>
         <li>Groups like Nursing resolve to individual recipients at send time via a role-to-user mapping. <span class="todo">confirm modeling + what happens when membership changes later</span></li>
       </ul>
       <aside class="notes">
@@ -237,9 +237,9 @@
       <p class="kicker">Decision 2 of 3 · the one that bit us</p>
       <h2>Temporal tables made audit easy and history hard</h2>
       <ul class="small">
-        <li><strong>Why they looked right:</strong> built-in row versioning, near-zero implementation cost, strong audit support, a familiar SQL Server capability.</li>
+        <li><strong>Why they looked right:</strong> built-in row versioning, near-zero implementation cost, strong audit support, a familiar SQL Server capability</li>
         <li><strong>The failure mode:</strong> one user action (reassign, add a recipient, change status, post a message) lands as independent version rows in four tables. Building product history meant merging four version streams into one ordered, human-readable timeline, regenerated every time a task detail was viewed. <span class="todo">confirm the specifics: ordering approach, worst downstream bugs</span></li>
-        <li><strong>What I'd build today:</strong> temporal tables for compliance and forensics, plus a separate append-only activity log, written at mutation time, for user-facing history.</li>
+        <li><strong>What I'd build today:</strong> temporal tables for compliance and forensics, plus a separate append-only activity log, written at mutation time, for user-facing history</li>
       </ul>
       <p class="small muted" style="margin-top:0.6em">The lesson: audit history and product-facing activity history have different consumers and different semantics, so one storage mechanism shouldn't serve both.</p>
       <aside class="notes">
@@ -265,7 +265,7 @@
       <ul class="small">
         <li>Mutations completed on the server, then the affected views refreshed. The history panel, for example, refreshed on every edit. <span class="todo">confirm refresh scope: whole inbox or affected resources?</span></li>
         <li>The trade: modest extra network traffic bought simpler consistency semantics and far less mutation logic to get wrong under deadline. The main alternative was mirroring state into Redux, which we deliberately bypassed for task data.</li>
-        <li>The data-fetching layer we built for this became a reusable strategy that replaced error-prone existing patterns beyond our feature.</li>
+        <li>The data-fetching layer we built for this became a reusable strategy that replaced error-prone existing patterns beyond our feature</li>
       </ul>
       <aside class="notes">
         Don't claim narrow query invalidation unless it's true — the honest version
@@ -283,7 +283,7 @@
       <h2>A plan built to surface risk early</h2>
       <ul class="small">
         <li>Ticketed and sequenced nearly the whole project up front in vertical slices, ordered so four or more engineers could work in parallel without blocking each other. Ownership areas were matched to each engineer's interests.</li>
-        <li>An auto-adjusting Gantt chart re-forecast the completion date as tickets closed: schedule risk surfaced weeks before it became unrecoverable, while estimates and scope kept moving underneath.</li>
+        <li>An auto-adjusting Gantt chart re-forecast the completion date as tickets closed: schedule risk surfaced weeks before it became unrecoverable, while estimates and scope kept moving underneath</li>
         <li><span class="todo">Add one concrete example: a place where the forecast moved and we cut or resequenced scope in response</span></li>
       </ul>
       <aside class="notes">
@@ -299,9 +299,9 @@
       <p class="kicker">Rollout</p>
       <h2>Nothing shipped to everyone at once</h2>
       <ul class="small">
-        <li>Feature-flagged from day one; piloted with lower-risk practices that wanted early access, then GA.</li>
+        <li>Feature-flagged from day one; piloted with lower-risk practices that wanted early access, then GA</li>
         <li>Bug bashes with stakeholders and pre-mortems before go-live. <span class="todo">add the most serious pre-mortem risk and how it was mitigated</span></li>
-        <li>The same flag machinery enforced the legacy sunset, practice by practice.</li>
+        <li>The same flag machinery enforced the legacy sunset, practice by practice</li>
       </ul>
       <aside class="notes">
         PREP: "what exactly did the flag control?", "what was the rollback process?",
@@ -343,9 +343,9 @@
       <p class="kicker">What failed</p>
       <h2>What went badly</h2>
       <ul class="small">
-        <li>The temporal-table choice made user-facing history a tremendous headache, with a tail of downstream complexity.</li>
+        <li>The temporal-table choice made user-facing history a tremendous headache, with a tail of downstream complexity</li>
         <li>Embedding the feature in legacy Visual Basic pages, on top of error-prone existing data fetching, added constant drag. The reusable fetching layer started as a way to cope with that.</li>
-        <li>I delegated implementation ownership without first making the architectural decision boundary explicit; by the time I raised concerns, the engineer had already invested heavily in their design.</li>
+        <li>I delegated implementation ownership without first making the architectural decision boundary explicit; by the time I raised concerns, the engineer had already invested heavily in their design</li>
       </ul>
       <aside class="notes">
         The third bullet is the process failure, owned as mine — not a story about a
@@ -364,8 +364,8 @@
       <h2>Three lessons I still use</h2>
       <ol class="small">
         <li>Separate audit storage from user-facing activity history. They have different consumers and need different designs.</li>
-        <li>Define architectural decision rights before delegating implementation ownership, so disagreement surfaces during design review instead of after someone has sunk weeks into an approach.</li>
-        <li>Sequence the whole project up front to expose the critical path, then keep revising scope and estimates against it as reality comes in.</li>
+        <li>Define architectural decision rights before delegating implementation ownership, so disagreement surfaces during design review instead of after someone has sunk weeks into an approach</li>
+        <li>Sequence the whole project up front to expose the critical path, then keep revising scope and estimates against it as reality comes in</li>
       </ol>
       <p class="small muted" style="margin-top:1em">Before starting, I interviewed several senior engineers about how they decomposed large projects, and synthesized that into the planning and design process I used here and have since taught to other teams.</p>
       <p style="margin-top:1.6em" class="muted">Happy to go deeper on any of it.</p>
