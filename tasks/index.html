@@ -152,7 +152,7 @@
           <div class="sub"><span>server-owned state</span><span>refresh on change</span><span class="todo">near-realtime mechanism: confirm polling vs. push</span></div>
         </div>
         <div class="layer"><span class="name">Task API · application layer (C#)</span>
-          <div class="sub"><span>authorization &amp; practice isolation</span><span>task + recipients written transactionally</span><span>group → user resolution</span><span>notification creation</span></div>
+          <div class="sub"><span>authorization &amp; practice isolation</span><span>task + recipients written transactionally</span><span>group → user resolution</span><span>notification creation</span><span>scheduled sweep for stale &amp; orphaned tasks</span></div>
         </div>
         <div class="layer"><span class="name">SQL Server</span>
           <div class="sub"><span>current-state tables</span><span>temporal history on every table</span><span class="todo">inbox indexes: confirm</span></div>
@@ -199,8 +199,11 @@
         cleared on view — with the temporal table preserving even deleted rows for
         audit. Verify against memory before presenting it as fact; if it stays fuzzy,
         say "the notification schema I don't recall precisely" and pivot to what you do
-        know. "What happens to tasks when a user is deactivated?" — have the real
-        answer or say it plainly if you don't recall.
+        know. "What happens to tasks when a user is deactivated?" — confirmed: a
+        cronjob swept for old and orphaned tasks; a task could be orphaned when
+        everyone associated with it had left the organization. Good edge-case story:
+        it shows the design anticipated organizational churn, not just happy-path
+        messaging.
         Concurrency (confirmed): multi-table writes wrapped in one transaction (no
         partial states), and optimistic concurrency on edits — the update failed if
         the task had changed since it was read, and the client refetched, which is
