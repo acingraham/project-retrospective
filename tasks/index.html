@@ -369,25 +369,22 @@
       <h2>What could have gone better</h2>
       <ul class="small">
         <li>The temporal-table choice made user-facing history a tremendous headache, with a tail of downstream complexity</li>
-        <li>Embedding the feature in legacy Visual Basic pages, on top of error-prone existing data fetching, added constant drag. The reusable fetching layer started as a way to cope with that.</li>
         <li>Initial ticket sequencing was poorly received by product as being too optimistic. This was a result of the sequencing being meant to allow engineers to move in parallel at a range of velocities without ever becoming blocked or causing conflicts.</li>
         <li>The Role Service that was meant to handle mapping a role to users had been broken and unused for a long time. This was unexpected effort on our part.</li>
-        <li>I delegated implementation ownership without first making the architectural decision boundary explicit; by the time I raised concerns, the engineer had already invested heavily in their design</li>
       </ul>
       <aside class="notes">
         The sequencing bullet is the concrete story behind the reflection lesson on
         adjusting project presentation to the audience: a plan built for engineer
         parallelism read as an over-optimistic timeline to product, because the two
         audiences needed different views of the same plan.
-        The delegation bullet is the process failure, owned as mine — not a story about
-        a difficult engineer. PREP before telling it live: the technical disagreement
-        itself, why both approaches were reasonable, how it was evaluated and decided,
-        and how the engineer kept meaningful ownership afterward. If those specifics
-        won't come back to you, keep the bullet at this level and don't go deeper.
         The Role Service bullet is a good "unknowns surface anyway" story: even with
         heavy upfront derisking, a dependency you assumed worked turned out to be
         long-broken — which is itself an argument for the early-sequencing approach
         that found it.
+        Off-slide but keep ready: the VB-page embedding and data-fetching drag (the
+        reusable fetching layer came out of it), and the delegation story — the
+        reflection slide's disagreement lesson will invite it, so have the concrete
+        disagreement, how it was decided, and how the engineer kept ownership.
       </aside>
     </section>
 
