@@ -64,38 +64,43 @@
     </section>
 
     <!-- Demo · interactive prototype, one screen per slide -->
-    <section data-section="demo"
-             data-background-iframe="prototypes/oncoemr-tasks.html#inbox/clean"
-             data-background-interactive>
+    <section data-section="demo">
+      <p class="kicker">Demo · 1 of 4</p>
+      <h2 class="demo-h">The inbox</h2>
+      <iframe class="demo-frame" data-src="prototypes/oncoemr-tasks.html#inbox/clean"></iframe>
       <aside class="notes">
         Live prototype — the inbox. Show: filters, a sortable column, bulk actions
         (the recovered MVP cut), pagination. Interact briefly; don't tour every control.
+        Click OUTSIDE the demo (heading or margin) to give arrow keys back to the deck.
       </aside>
     </section>
-    <section data-section="demo"
-             data-background-iframe="prototypes/oncoemr-tasks.html#task/clean"
-             data-background-interactive>
+    <section data-section="demo">
+      <p class="kicker">Demo · 2 of 4</p>
+      <h2 class="demo-h">Task detail and history</h2>
+      <iframe class="demo-frame" data-src="prototypes/oncoemr-tasks.html#task/clean"></iframe>
       <aside class="notes">
         Task detail — point at the unified history feed: this innocent-looking list is
-        what the temporal-tables deep dive (slide 9) is about. Add a message to show
-        the append-only thread.
+        what the temporal-tables deep dive is about. Add a message to show the
+        append-only thread.
       </aside>
     </section>
-    <section data-section="demo"
-             data-background-iframe="prototypes/oncoemr-tasks.html#compose/clean"
-             data-background-interactive>
+    <section data-section="demo">
+      <p class="kicker">Demo · 3 of 4</p>
+      <h2 class="demo-h">Composing a task</h2>
+      <iframe class="demo-frame" data-src="prototypes/oncoemr-tasks.html#compose/clean"></iframe>
       <aside class="notes">
-        Composing a task — recipients including groups (Nursing → resolved at send
-        time), urgency, and linking to a patient or order.
+        Composing — recipients including groups (Nursing → resolved at send time),
+        urgency, and linking to a patient or order.
       </aside>
     </section>
-    <section data-section="demo"
-             data-background-iframe="prototypes/oncoemr-tasks.html#chart/clean"
-             data-background-interactive>
+    <section data-section="demo">
+      <p class="kicker">Demo · 4 of 4</p>
+      <h2 class="demo-h">In the patient chart</h2>
+      <iframe class="demo-frame" data-src="prototypes/oncoemr-tasks.html#chart/clean"></iframe>
       <aside class="notes">
         The payoff of entity association: the patient chart surfaces this patient's
-        tasks right inside the treatment workflow — tasks meet clinicians where they
-        already are.
+        tasks inside the treatment workflow — tasks meet clinicians where they already
+        are.
       </aside>
     </section>
 
@@ -404,6 +409,17 @@
   }
   Reveal.on('ready', syncFooter);
   Reveal.on('slidechanged', syncFooter);
+
+  // demo iframes swallow key events while focused; return focus to the deck
+  // on slide change and whenever the user clicks outside an iframe
+  function unfocusIframe () {
+    if (document.activeElement && document.activeElement.tagName === 'IFRAME') {
+      document.activeElement.blur();
+      window.focus();
+    }
+  }
+  Reveal.on('slidechanged', unfocusIframe);
+  document.addEventListener('pointerdown', unfocusIframe);
 </script>
 
 </body>
