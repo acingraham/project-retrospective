@@ -282,6 +282,11 @@
   opacity: 1;
 }
 
+/* interactive-background demo slides: keep the iframe clear of the footer rail */
+.reveal .slide-background-content iframe {
+  height: calc(100% - 64px) !important;
+}
+
 /* hide reveal's default progress/controls chrome we don't want */
 .reveal .progress { display: none; }
 
