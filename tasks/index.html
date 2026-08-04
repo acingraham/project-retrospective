@@ -63,6 +63,42 @@
       </aside>
     </section>
 
+    <!-- Demo · interactive prototype, one screen per slide -->
+    <section data-section="demo"
+             data-background-iframe="prototypes/oncoemr-tasks.html#inbox/clean"
+             data-background-interactive>
+      <aside class="notes">
+        Live prototype — the inbox. Show: filters, a sortable column, bulk actions
+        (the recovered MVP cut), pagination. Interact briefly; don't tour every control.
+      </aside>
+    </section>
+    <section data-section="demo"
+             data-background-iframe="prototypes/oncoemr-tasks.html#task/clean"
+             data-background-interactive>
+      <aside class="notes">
+        Task detail — point at the unified history feed: this innocent-looking list is
+        what the temporal-tables deep dive (slide 9) is about. Add a message to show
+        the append-only thread.
+      </aside>
+    </section>
+    <section data-section="demo"
+             data-background-iframe="prototypes/oncoemr-tasks.html#compose/clean"
+             data-background-interactive>
+      <aside class="notes">
+        Composing a task — recipients including groups (Nursing → resolved at send
+        time), urgency, and linking to a patient or order.
+      </aside>
+    </section>
+    <section data-section="demo"
+             data-background-iframe="prototypes/oncoemr-tasks.html#chart/clean"
+             data-background-interactive>
+      <aside class="notes">
+        The payoff of entity association: the patient chart surfaces this patient's
+        tasks right inside the treatment workflow — tasks meet clinicians where they
+        already are.
+      </aside>
+    </section>
+
     <!-- 4 · MVP boundary -->
     <section data-section="design">
       <p class="kicker">Scope</p>
@@ -338,7 +374,7 @@
 <!-- footer: section rail + slide count -->
 <div class="deck-footer">
   <div class="rail">
-    <span data-rail="context">Context</span><span data-rail="design">Design</span><span data-rail="decisions">Decisions</span><span data-rail="execution">Execution</span><span data-rail="outcomes">Outcomes</span><span data-rail="reflection">Reflection</span>
+    <span data-rail="context">Context</span><span data-rail="demo">Demo</span><span data-rail="design">Design</span><span data-rail="decisions">Decisions</span><span data-rail="execution">Execution</span><span data-rail="outcomes">Outcomes</span><span data-rail="reflection">Reflection</span>
   </div>
   <div class="page"><span id="page-now">1</span> / <span id="page-total">–</span></div>
 </div>
