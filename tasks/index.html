@@ -285,6 +285,7 @@
       <h2>Keeping task state on the server</h2>
       <ul class="small">
         <li>Mutations completed on the server, then the affected views refreshed. The history panel, for example, refreshed on every edit.</li>
+        <li>There were a variety of pre-existing footguns in how data was synced between Redux and the backend, and I wanted to ensure the MVP avoided them</li>
         <li>The trade: modest extra network traffic bought simpler consistency semantics and far less mutation logic to get wrong under deadline. The main alternative was mirroring state into Redux, which we deliberately bypassed for task data.</li>
         <li>The data-fetching layer we built for this became a reusable strategy that replaced error-prone existing patterns beyond our feature</li>
       </ul>
