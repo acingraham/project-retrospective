@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tasks — project retrospective</title>
+  <link rel="stylesheet" href="lib/reveal/reset.css">
+  <link rel="stylesheet" href="lib/reveal/reveal.css">
+  <link rel="stylesheet" href="theme.css">
+</head>
+<body>
+
+<div class="reveal">
+  <div class="slides">
+
+    <!-- 1 · Title stack: cover with demos as vertical slides -->
+    <section>
+      <section data-section="context">
+        <p class="kicker">Project retrospective · Flatiron Health</p>
+        <h1 style="margin-bottom:0.35em">Tasks</h1>
+        <iframe class="demo-frame" style="height:480px" data-src="prototypes/oncoemr-tasks.html#inbox/clean"></iframe>
+        <p class="small muted" style="margin-top:0.4em; font-size:0.55em">* The demos in this deck are approximations of the feature</p>
+      </section>
+      <section data-section="context">
+        <p class="kicker">Demo · 1 of 3</p>
+        <h2 class="demo-h">Task detail and history</h2>
+        <iframe class="demo-frame" data-src="prototypes/oncoemr-tasks.html#task/clean"></iframe>
+      </section>
+      <section data-section="context">
+        <p class="kicker">Demo · 2 of 3</p>
+        <h2 class="demo-h">Composing a task</h2>
+        <iframe class="demo-frame" data-src="prototypes/oncoemr-tasks.html#compose/clean"></iframe>
+      </section>
+      <section data-section="context">
+        <p class="kicker">Demo · 3 of 3</p>
+        <h2 class="demo-h">In the patient chart</h2>
+        <iframe class="demo-frame" data-src="prototypes/oncoemr-tasks.html#chart/clean"></iframe>
+      </section>
+    </section>
+
+    <!-- 2 · User workflow and requirements -->
+    <section data-section="context">
+      <p class="kicker">The feature</p>
+      <h2>What is a task?</h2>
+      <ul class="small">
+        <li>Somewhere between an email and a Jira ticket</li>
+        <li>Near-realtime messaging between users within a practice, organized as tasks</li>
+        <li>Each task has a subject, description, status, urgency, due date, an assignee, and recipients. Recipients can be individuals or a group like Nursing.</li>
+        <li>Tasks arrive in an inbox with search, pagination, sorting, and filtering, and users are notified when they receive one</li>
+        <li>A task can be linked to a patient or an order</li>
+        <li>Tasks are surfaced in a number of areas throughout the application, including on the pages of entities they're linked to</li>
+        <li>Every task keeps its full history, both for users and for auditing</li>
+      </ul>
+    </section>
+
+    <!-- 3 · Stakes and constraints -->
+    <section data-section="context">
+      <p class="kicker">Stakes &amp; constraints</p>
+      <h2>Additional context</h2>
+      <ul class="small">
+        <li><strong>Highly requested:</strong> one of the top 10 most requested features across the organization for years</li>
+        <li><strong>Tight timeline w/ significant consequences:</strong> a contractual obligation to deliver to a subset of practices by a fixed date, with significant business cost if we missed the deadline</li>
+        <li><strong>Legacy system and competing products:</strong> a legacy Tasking feature that was badly broken but still actively used, so the replacement had to be a functional superset, transitioned without breaking live clinical workflows. Additionally, many practices had their own approach for messaging with each other.</li>
+        <li><strong>Team breakdown:</strong> our team was made up of ~8 engineers divided loosely across 2 work streams. I was leading the work stream working on Tasks while the other work stream was working on meeting a major EHR certification with its own immovable deadline.</li>
+      </ul>
+    </section>
+
+    <!-- 3b · Approach -->
+    <section data-section="context">
+      <p class="kicker">Strategy</p>
+      <h2>Approach</h2>
+      <p class="small">With a tight timeline and little flexibility on resources, I wanted to derisk the contractually obligated work as much as possible: surface unknowns early and avoid missteps. Two things did most of that work.</p>
+      <ol class="small">
+        <li>Ticketing almost every bit of work necessary for the most minimal MVP, and sequencing those tickets so 4+ engineers could always work in parallel without conflicts</li>
+        <li>Asking 4–5 more senior engineers how they approached system design, and applying those approaches to this system's design. I ended up copying one engineer's approach and it's something I still follow to this day and have introduced to multiple teams since.</li>
+      </ol>
+      <p class="small muted">Alongside that, I tried to align each engineer's area of ownership with their interests</p>
+    </section>
+
+    <!-- 4 · MVP boundary -->
+    <section data-section="design">
+      <p class="kicker">Scope</p>
+      <h2>Where we drew the MVP line</h2>
+      <div class="cols">
+        <div>
+          <p class="col-label">MVP</p>
+          <ul class="small">
+            <li>Full task fields: subject, description, status, urgency, due date, assignee, recipients</li>
+            <li>Task history, for both user-friendly display and auditing</li>
+            <li>Notifications when a task is received</li>
+            <li>Inbox with search, pagination, sorting, and filtering</li>
+            <li>Patient and order associations, surfaced on those entities</li>
+            <li>Group sends (e.g. Nursing)</li>
+          </ul>
+        </div>
+        <div>
+          <p class="col-label">Permitted to come after MVP</p>
+          <ul class="small">
+            <li>Bulk task edits</li>
+            <li>Integrated frontend state, instead of refetching on change</li>
+            <li>History generation done properly on the backend (the MVP assembled it on the frontend)</li>
+            <li>Table indexes</li>
+            <li>Proper real-time notifications</li>
+            <li>Migrating new frontend components back into the design system</li>
+            <li>Styling improvements, of which there were many</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5 · Architecture and data flow -->
+    <section data-section="design">
+      <p class="kicker">Architecture</p>
+      <h2>Data flow, kept deliberately plain</h2>
+      <div class="arch">
+        <div class="layer"><span class="name">React UI</span>
+          <div class="sub"><span>server-owned state</span><span>refresh on change</span></div>
+        </div>
+        <div class="layer"><span class="name">Task API · application layer (C#)</span>
+          <div class="sub"><span>task + recipients written transactionally</span><span>group → user resolution</span><span>notification creation</span><span>scheduled sweep for stale &amp; orphaned tasks</span></div>
+        </div>
+        <div class="layer"><span class="name">SQL Server</span>
+          <div class="sub"><span>current-state tables</span><span>temporal history on every table</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6 · Data model -->
+    <section data-section="design">
+      <p class="kicker">Data model</p>
+      <h2>Four tables, each with temporal history</h2>
+      <div class="entities">
+        <div class="ent"><div class="name">Tasks</div>
+          <ul><li>subject</li><li>description</li><li>status</li><li>urgency</li><li>assigneeId</li><li>creatorId</li><li>patientId?</li><li>orderId?</li><li>createdAt</li><li>updatedAt</li></ul>
+        </div>
+        <div class="ent"><div class="name">Messages</div>
+          <ul><li>taskId</li><li>message</li><li>creatorId</li><li>createdAt</li></ul>
+        </div>
+        <div class="ent"><div class="name">Recipients</div>
+          <ul><li>taskId</li><li>recipientId</li></ul>
+        </div>
+        <div class="ent"><div class="name">Notifications</div>
+          <ul><li>taskId</li><li>recipientId</li></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7 · Decision: migrate or coexist -->
+    <section data-section="decisions">
+      <p class="kicker">Decision 1 of 3</p>
+      <h2>Coexist with legacy, don't migrate</h2>
+      <div class="tradeoff">
+        <div class="cell"><div class="t">Alternatives</div>One-time migration of legacy tasks; or patch the legacy feature in place.</div>
+        <div class="cell"><div class="t">Chosen</div>Run both systems. Each practice agreed a sunset date for legacy, enforced by feature flag: enable the new system, monitor legacy usage, disable creation of new legacy tasks while still allowing updates to existing ones, then disable legacy editing altogether.</div>
+        <div class="cell"><div class="t">Benefit / cost</div>Migration risk came off the critical path entirely. In exchange we took on dual support and had to actively nudge practices off the old system.</div>
+      </div>
+    </section>
+
+    <!-- 8 · Deep dive: history -->
+    <section data-section="decisions">
+      <p class="kicker">Decision 2 of 3</p>
+      <h2>Temporal tables made audit easy and history hard</h2>
+      <ul class="small">
+        <li><strong>Why they looked right:</strong> built-in row versioning, near-zero implementation cost, strong audit support, a familiar SQL Server capability</li>
+        <li><strong>The failure mode:</strong> one user action (reassign, add a recipient, change status, post a message) lands as independent version rows in four tables. Building product history meant merging four version streams into one ordered, human-readable timeline, regenerated every time a task detail was viewed. The user-facing history was itself complex and dynamic, which made deriving it from temporal tables particularly difficult.</li>
+        <li><strong>What I'd build today:</strong> temporal tables for compliance and forensics, plus a separate append-only activity log, written at mutation time, for user-facing history</li>
+      </ul>
+      <p class="small muted" style="margin-top:0.6em">The lesson: audit history and product-facing activity history have different consumers and different semantics, so one storage mechanism shouldn't serve both.</p>
+    </section>
+
+    <!-- 9 · Deep dive: frontend consistency -->
+    <section data-section="decisions">
+      <p class="kicker">Decision 3 of 3</p>
+      <h2>Keeping task state on the server</h2>
+      <ul class="small">
+        <li>Mutations completed on the server, then the affected views refreshed. The history panel, for example, refreshed on every edit.</li>
+        <li>There were a variety of pre-existing footguns in how data was synced between Redux and the backend, and I wanted to ensure the MVP avoided them</li>
+        <li>The trade: modest extra network traffic bought simpler consistency semantics and far less mutation logic to get wrong under deadline. The main alternative was mirroring state into Redux, which we deliberately bypassed for task data.</li>
+        <li>The data-fetching layer we built for this became a reusable strategy that replaced error-prone existing patterns beyond our feature</li>
+      </ul>
+    </section>
+
+    <!-- 10 · Execution and critical path -->
+    <section data-section="execution">
+      <p class="kicker">Execution</p>
+      <h2>A plan built to surface risk early</h2>
+      <ul class="small">
+        <li>Ticketed and sequenced nearly the whole project up front in vertical slices, ordered so four or more engineers could work in parallel without blocking each other. Ownership areas were matched to each engineer's interests.</li>
+        <li>An auto-adjusting Gantt chart re-forecast the completion date as tickets closed: schedule risk surfaced weeks before it became unrecoverable, while estimates and scope kept moving underneath</li>
+      </ul>
+    </section>
+
+    <!-- 11 · Rollout and risk management -->
+    <section data-section="execution">
+      <p class="kicker">Rollout</p>
+      <h2>Nothing shipped to everyone at once</h2>
+      <ul class="small">
+        <li>Feature-flagged from day one; piloted with lower-risk practices that wanted early access, then GA</li>
+        <li>Bug bashes with stakeholders and pre-mortems before go-live</li>
+        <li>The same flag machinery enforced the legacy sunset, practice by practice</li>
+      </ul>
+    </section>
+
+    <!-- 12 · Results -->
+    <section data-section="outcomes">
+      <p class="kicker">Results</p>
+      <h2>What we delivered</h2>
+      <div class="stats">
+        <div>
+          <div class="num">On time</div>
+          <div class="label">contractual practices live by the committed date</div>
+        </div>
+        <div>
+          <div class="num">Beyond MVP</div>
+          <div class="label">additional features shipped on top</div>
+        </div>
+        <div>
+          <div class="num">~6 months</div>
+          <div class="label">before the first customer-reported defect</div>
+        </div>
+      </div>
+      <p class="small muted" style="margin-top:4em; font-size:0.55em">* Adoption and NPS were high but I don't have the exact figures</p>
+    </section>
+
+    <!-- 13 · What failed -->
+    <section data-section="reflection">
+      <p class="kicker">Results</p>
+      <h2>What could have gone better</h2>
+      <ul class="small">
+        <li>The temporal-table choice made user-facing history a tremendous headache, with a tail of downstream complexity</li>
+        <li>Initial ticket sequencing was poorly received by Product as being too optimistic. This was a result of the sequencing being meant to allow engineers to move in parallel at a range of velocities without ever becoming blocked or causing conflicts.</li>
+        <li>The Role Service that was meant to handle mapping a role to users had been broken and unused for a long time. This was unexpected effort on our part.</li>
+      </ul>
+    </section>
+
+    <!-- 14 · Reflection -->
+    <section data-section="reflection">
+      <p class="kicker">Reflection</p>
+      <h2>Lessons I still use</h2>
+      <ul class="small">
+        <li>How to approach project planning and system design with a team</li>
+        <li>The value of unearthing unknowns and decisions early along with project planning and sequencing</li>
+        <li>Adjusting project presentation (especially timelines) based on the audience</li>
+        <li>How to approach technical disagreements with SWEs who are heavily invested in their solution</li>
+      </ul>
+    </section>
+
+    <!-- 15 · Closing stack: cover again, demos below for Q&A -->
+    <section>
+      <section data-section="context">
+        <p class="kicker">Project retrospective · Flatiron Health</p>
+        <h1 style="margin-bottom:0.35em">Tasks</h1>
+        <iframe class="demo-frame" style="height:480px" data-src="prototypes/oncoemr-tasks.html#inbox/clean"></iframe>
+        <p class="small muted" style="margin-top:0.4em; font-size:0.55em">* The demos in this deck are approximations of the feature</p>
+      </section>
+      <section data-section="context">
+        <p class="kicker">Demo · 1 of 3</p>
+        <h2 class="demo-h">Task detail and history</h2>
+        <iframe class="demo-frame" data-src="prototypes/oncoemr-tasks.html#task/clean"></iframe>
+      </section>
+      <section data-section="context">
+        <p class="kicker">Demo · 2 of 3</p>
+        <h2 class="demo-h">Composing a task</h2>
+        <iframe class="demo-frame" data-src="prototypes/oncoemr-tasks.html#compose/clean"></iframe>
+      </section>
+      <section data-section="context">
+        <p class="kicker">Demo · 3 of 3</p>
+        <h2 class="demo-h">In the patient chart</h2>
+        <iframe class="demo-frame" data-src="prototypes/oncoemr-tasks.html#chart/clean"></iframe>
+      </section>
+    </section>
+
+  </div>
+</div>
+
+<!-- footer: section rail + slide count -->
+<div class="deck-footer">
+  <div class="rail">
+    <span data-rail="context">Context</span><span data-rail="design">Design</span><span data-rail="decisions">Decisions</span><span data-rail="execution">Execution</span><span data-rail="outcomes">Outcomes</span><span data-rail="reflection">Reflection</span>
+  </div>
+  <div class="page"><span id="page-now">1</span> / <span id="page-total">–</span></div>
+</div>
+
+<script src="lib/reveal/reveal.js"></script>
+<script src="lib/reveal/plugin/notes/notes.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    transition: 'none',
+    center: false,
+    width: 1100,
+    height: 700,
+    margin: 0.08,
+    controls: true,
+    controlsTutorial: true,
+    plugins: [ RevealNotes ]
+  });
+
+  // keep the footer rail + page count in sync with the current slide
+  const railSpans = document.querySelectorAll('.deck-footer [data-rail]');
+  function syncFooter (event) {
+    const slide = event ? event.currentSlide : Reveal.getCurrentSlide();
+    const section = slide.dataset.section;
+    railSpans.forEach(s => s.classList.toggle('on', s.dataset.rail === section));
+    document.getElementById('page-now').textContent = Reveal.getSlidePastCount() + 1;
+    document.getElementById('page-total').textContent = Reveal.getTotalSlides();
+  }
+  Reveal.on('ready', syncFooter);
+  Reveal.on('slidechanged', syncFooter);
+
+  // demo iframes swallow key events while focused; return focus to the deck
+  // on slide change and whenever the user clicks outside an iframe
+  function unfocusIframe () {
+    if (document.activeElement && document.activeElement.tagName === 'IFRAME') {
+      document.activeElement.blur();
+      window.focus();
+    }
+  }
+  Reveal.on('slidechanged', unfocusIframe);
+  document.addEventListener('pointerdown', unfocusIframe);
+</script>
+
+</body>
+</html>

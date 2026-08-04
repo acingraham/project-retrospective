@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Retrospectives</title>
+  <style>
+    :root {
+      --paper: #fcfcfa;
+      --ink: #21272b;
+      --muted: #5f6b70;
+      --accent: #23664f;
+      --rule: #e3e5e0;
+    }
+    * { box-sizing: border-box; margin: 0; }
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.45;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    main { max-width: 38rem; width: 100%; }
+    .kicker {
+      font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 2.2rem;
+    }
+    a.deck {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      text-decoration: none;
+      color: inherit;
+      border-top: 1px solid var(--rule);
+      padding: 1.6rem 0.2rem;
+    }
+    a.deck:last-of-type { border-bottom: 1px solid var(--rule); }
+    a.deck h2 { font-size: 1.6rem; font-weight: 650; letter-spacing: -0.02em; }
+    a.deck p { color: var(--muted); font-size: 0.9rem; margin-top: 0.3rem; }
+    a.deck .go { color: var(--muted); font-size: 1.2rem; opacity: 0.55; }
+    a.deck:hover h2, a.deck:hover .go { color: var(--accent); opacity: 1; }
+  </style>
+</head>
+<body>
+<main>
+  <p class="kicker">Andrew Ingraham · Retrospectives</p>
+  <a class="deck" href="tasks/">
+    <div>
+      <h2>Tasks</h2>
+      <p>Project retrospective · Flatiron Health</p>
+    </div>
+    <span class="go">&#8594;</span>
+  </a>
+  <a class="deck" href="incident/">
+    <div>
+      <h2>Ten million PDFs to fix</h2>
+      <p>Incident retrospective · Flatiron Health</p>
+    </div>
+    <span class="go">&#8594;</span>
+  </a>
+</main>
+</body>
+</html>

@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PDF incident — incident retrospective</title>
+  <link rel="stylesheet" href="lib/reveal/reset.css">
+  <link rel="stylesheet" href="lib/reveal/reveal.css">
+  <link rel="stylesheet" href="theme.css">
+</head>
+<body>
+
+<div class="reveal">
+  <div class="slides">
+
+    <!-- 1 · Cover -->
+    <section data-section="detection">
+      <p class="kicker">Incident retrospective · Flatiron Health</p>
+      <h1>Ten million PDFs to fix</h1>
+      <p class="small">Editing a PDF left every previous version of the document inside the file, and a user noticed. I built the system that replaced affected documents at roughly a million files an hour, designed so that no document could ever be lost.</p>
+    </section>
+
+    <!-- 2 · Detection -->
+    <section data-section="detection">
+      <p class="kicker">Detection</p>
+      <h2>A user saw data that should have been gone</h2>
+      <ul class="small">
+        <li>A user reported seeing data they weren't expecting in their document, and that report surfaced the problem</li>
+        <li>Editing a PDF created a new version of the document inside the same file. The previous version was never removed, so deleted data was still present.</li>
+        <li>Most PDF readers never display the earlier versions, so the leftover data was invisible in normal use</li>
+        <li>The company stored more than 100 million files of this type</li>
+      </ul>
+    </section>
+
+    <!-- 3 · Triage: the response structure -->
+    <section data-section="triage">
+      <p class="kicker">Triage</p>
+      <h2>Three groups working in parallel</h2>
+      <p class="small">The company split the response into three groups. I was assigned the third on a Thursday, mid-day.</p>
+      <div class="cols">
+        <div>
+          <p class="col-label">Hide</p>
+          <ul class="small">
+            <li>Hide potentially affected files from users until resolution</li>
+          </ul>
+        </div>
+        <div>
+          <p class="col-label">Identify</p>
+          <ul class="small">
+            <li>Scan the 100M+ stored documents and publish lists of potentially affected files</li>
+          </ul>
+        </div>
+        <div>
+          <p class="col-label">Fix · mine</p>
+          <ul class="small">
+            <li>Replace every listed document with a corrected copy, quickly and safely</li>
+          </ul>
+        </div>
+      </div>
+      <p class="small muted" style="margin-top:0.8em">The brief for my group: given parquet files listing potentially affected documents, replace them with corrected files, fast, with zero data loss</p>
+    </section>
+
+    <!-- 5 · Resolution: architecture -->
+    <section data-section="resolution">
+      <p class="kicker">Resolution · design</p>
+      <h2>The remediation pipeline</h2>
+      <div class="arch">
+        <div class="layer"><span class="name">Athena</span>
+          <div class="sub"><span>parquet lists of potentially affected documents</span><span>10M+ files</span></div>
+        </div>
+        <div class="layer"><span class="name">EC2 ingester</span>
+          <div class="sub"><span>reads the lists</span><span>enqueues S3 ARNs</span></div>
+        </div>
+        <div class="layer"><span class="name">SQS</span>
+          <div class="sub"><span>work queue</span><span>retries</span><span>dead-letter queue for repeated failures</span></div>
+        </div>
+        <div class="layer"><span class="name">Lambda workers · Python</span>
+          <div class="sub"><span>back up the original to S3</span><span>run the fix</span><span>overwrite the original on success</span></div>
+        </div>
+        <div class="layer"><span class="name">S3</span>
+          <div class="sub"><span>document store, 100M+ files</span><span>backup copies</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6 · Resolution: safety invariants -->
+    <section data-section="resolution">
+      <p class="kicker">Resolution · safety</p>
+      <h2>Every document had a way back</h2>
+      <ul class="small">
+        <li>A backup copy landed in S3 before any document was touched</li>
+        <li>The original was overwritten only after its fix succeeded</li>
+        <li>Errors were retried, and repeated failures went to a dead-letter queue for manual follow-up</li>
+        <li>Updates were confirmed through logs</li>
+      </ul>
+    </section>
+
+    <!-- 7 · Resolution: the fix itself -->
+    <section data-section="resolution">
+      <p class="kicker">Resolution · the fix</p>
+      <h2>No library fixed every document</h2>
+      <ul class="small">
+        <li>Documents ran through two processing approaches, because neither one succeeded on every file</li>
+        <li>I extracted the functionality I needed from one library and combined it with a second, which together fixed almost 100% of the affected documents</li>
+      </ul>
+    </section>
+
+    <!-- 8 · Resolution: execution timeline -->
+    <section data-section="resolution">
+      <p class="kicker">Resolution · execution</p>
+      <h2>A working system in under a day</h2>
+      <div class="timeline">
+        <div class="row"><span class="when">THU NOON</span><span class="what">Assigned the fix workstream</span></div>
+        <div class="row"><span class="when">FRI AM</span><span class="what">Working end-to-end solution, able to process documents</span></div>
+        <div class="row"><span class="when">AFTER</span><span class="what">Blocked waiting on the identification lists, so the time went into scaling the system further</span></div>
+        <div class="row"><span class="when">TESTS</span><span class="what">One environment per day: a full run in dev, then a full run in stage, each confirmed before moving on</span></div>
+        <div class="row"><span class="when">PROD</span><span class="what">The remaining work ran over 2 to 3 days, broken up by practice, so success could be confirmed incrementally</span></div>
+      </div>
+    </section>
+
+    <!-- 9 · Results -->
+    <section data-section="resolution">
+      <p class="kicker">Results</p>
+      <h2>What the system delivered</h2>
+      <div class="stats">
+        <div>
+          <div class="num">&lt; 24 hrs</div>
+          <div class="label">from assignment to a working solution</div>
+        </div>
+        <div>
+          <div class="num">~1M / hour</div>
+          <div class="label">documents processed, with roughly 6x more speed available with minimal changes</div>
+        </div>
+        <div>
+          <div class="num">~100%</div>
+          <div class="label">of affected documents fixable by the combined two-library approach</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10 · Challenges -->
+    <section data-section="resolution">
+      <p class="kicker">Challenges</p>
+      <h2>What made it interesting</h2>
+      <ul class="small">
+        <li>Super high visibility and impact</li>
+        <li>I was newer to AWS at the time, and had to make sure a fleet this large didn't throttle unrelated services, since Lambda limits were shared at the organization level</li>
+        <li>Moving fast while guaranteeing that no document could be lost</li>
+      </ul>
+    </section>
+
+    <!-- 11 · Aftermath -->
+    <section data-section="aftermath">
+      <p class="kicker">Aftermath</p>
+      <h2>What changed afterward</h2>
+      <ul class="small">
+        <li>The incident showed me how much a single engineer can get done on AWS. I followed it by getting AWS certified, deliberately building knowledge beyond the services I used day-to-day.</li>
+      </ul>
+    </section>
+
+  </div>
+</div>
+
+<!-- footer: section rail + slide count -->
+<div class="deck-footer">
+  <div class="rail">
+    <span data-rail="detection">Detection</span><span data-rail="triage">Triage</span><span data-rail="resolution">Resolution</span><span data-rail="aftermath">Aftermath</span>
+  </div>
+  <div class="page"><span id="page-now">1</span> / <span id="page-total">–</span></div>
+</div>
+
+<script src="lib/reveal/reveal.js"></script>
+<script src="lib/reveal/plugin/notes/notes.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    transition: 'none',
+    center: false,
+    width: 1100,
+    height: 700,
+    margin: 0.08,
+    controls: true,
+    controlsTutorial: true,
+    plugins: [ RevealNotes ]
+  });
+
+  // keep the footer rail + page count in sync with the current slide
+  const railSpans = document.querySelectorAll('.deck-footer [data-rail]');
+  function syncFooter (event) {
+    const slide = event ? event.currentSlide : Reveal.getCurrentSlide();
+    const section = slide.dataset.section;
+    railSpans.forEach(s => s.classList.toggle('on', s.dataset.rail === section));
+    document.getElementById('page-now').textContent = Reveal.getSlidePastCount() + 1;
+    document.getElementById('page-total').textContent = Reveal.getTotalSlides();
+  }
+  Reveal.on('ready', syncFooter);
+  Reveal.on('slidechanged', syncFooter);
+</script>
+
+</body>
+</html>
