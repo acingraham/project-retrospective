@@ -284,7 +284,7 @@
       <p class="kicker">Decision 3 of 3</p>
       <h2>Keeping task state on the server</h2>
       <ul class="small">
-        <li>Mutations completed on the server, then the affected views refreshed. The history panel, for example, refreshed on every edit. <span class="todo">confirm refresh scope: whole inbox or affected resources?</span></li>
+        <li>Mutations completed on the server, then the affected views refreshed. The history panel, for example, refreshed on every edit.</li>
         <li>The trade: modest extra network traffic bought simpler consistency semantics and far less mutation logic to get wrong under deadline. The main alternative was mirroring state into Redux, which we deliberately bypassed for task data.</li>
         <li>The data-fetching layer we built for this became a reusable strategy that replaced error-prone existing patterns beyond our feature</li>
       </ul>
