@@ -259,7 +259,7 @@
       <h2>Temporal tables made audit easy and history hard</h2>
       <ul class="small">
         <li><strong>Why they looked right:</strong> built-in row versioning, near-zero implementation cost, strong audit support, a familiar SQL Server capability</li>
-        <li><strong>The failure mode:</strong> one user action (reassign, add a recipient, change status, post a message) lands as independent version rows in four tables. Building product history meant merging four version streams into one ordered, human-readable timeline, regenerated every time a task detail was viewed. <span class="todo">confirm the specifics: ordering approach, worst downstream bugs</span></li>
+        <li><strong>The failure mode:</strong> one user action (reassign, add a recipient, change status, post a message) lands as independent version rows in four tables. Building product history meant merging four version streams into one ordered, human-readable timeline, regenerated every time a task detail was viewed. The user-facing history was itself complex and dynamic, which made deriving it from temporal tables particularly difficult. <span class="todo">confirm the specifics: ordering approach, worst downstream bugs</span></li>
         <li><strong>What I'd build today:</strong> temporal tables for compliance and forensics, plus a separate append-only activity log, written at mutation time, for user-facing history</li>
       </ul>
       <p class="small muted" style="margin-top:0.6em">The lesson: audit history and product-facing activity history have different consumers and different semantics, so one storage mechanism shouldn't serve both.</p>
