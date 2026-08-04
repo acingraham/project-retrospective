@@ -296,7 +296,12 @@
 /* hide reveal's default progress/controls chrome we don't want */
 .reveal .progress { display: none; }
 
-.reveal .controls { color: var(--muted); }
+/* navigation arrows: bottom right, lifted clear of the footer line */
+.reveal .controls {
+  color: var(--muted);
+  right: 16px;
+  bottom: 44px;
+}
 
 /* speaker-notes-friendly print */
 @media print {
