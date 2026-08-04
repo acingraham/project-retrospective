@@ -108,38 +108,41 @@
     <section data-section="design">
       <p class="kicker">Scope</p>
       <h2>Where we drew the MVP line</h2>
-      <p class="small"><span class="todo">Bulk edits is real; the rest is an example split. Replace with the actual cuts before presenting.</span></p>
       <div class="cols">
         <div>
-          <p class="col-label">Shipped for the contractual date</p>
+          <p class="col-label">MVP</p>
           <ul class="small">
-            <li>Direct and group recipients</li>
-            <li>Inbox with filtering and sorting</li>
-            <li>In-app notifications</li>
-            <li>Patient and order associations</li>
-            <li>Core status workflow</li>
-            <li>Server-authoritative refreshes</li>
+            <li>Near-realtime messaging between users in a practice</li>
+            <li>Full task fields: subject, description, status, urgency, due date, assignee, recipients</li>
+            <li>Task history, for both user-friendly display and auditing</li>
+            <li>Notifications when a task is received</li>
+            <li>Inbox with pagination, sorting, and filtering</li>
+            <li>Patient and order associations, surfaced on those entities</li>
+            <li>Group sends (e.g. Nursing)</li>
           </ul>
         </div>
         <div>
-          <p class="col-label">Deliberately deferred</p>
+          <p class="col-label">Permitted to come after MVP</p>
           <ul class="small">
-            <li>Bulk task edits (cut from MVP, added back before go-live once the date was safe)</li>
-            <li>User-created custom groups</li>
-            <li>Saved filters</li>
-            <li>Email / mobile notifications</li>
-            <li>Configurable workflows</li>
-            <li>Optimistic client updates</li>
+            <li>Bulk task edits</li>
+            <li>Integrated frontend state, instead of refetching on change</li>
+            <li>Table indexes</li>
+            <li>In-app notifications</li>
+            <li>Styling improvements, of which there were many</li>
           </ul>
         </div>
       </div>
-      <p class="small muted" style="margin-top:0.8em">The rule: contractual functionality and foundational architecture in; nice-to-haves and premature abstraction out.</p>
       <aside class="notes">
-        Bulk edits is the proof the MVP cut wasn't a schedule slip in disguise: cut
-        early, then recovered before go-live once the date was safe. Tell it that way.
-        PREP, near-certain: "what else did you cut and how did you decide?" Have 1–2
-        more real cuts, one tempting cut you kept, and the deciding rule. Also know
-        which beyond-MVP features shipped after GA — slide 12 claims there were some.
+        Say aloud: deferrals were agreed up front, and when the date looked safe some
+        were pulled forward; bulk edits made it in before go-live.
+        The right column is the proof the MVP cut was a plan, not a schedule slip:
+        deferrals were named and agreed early, then recovered when the date allowed.
+        Note the mix on the right: product features AND technical polish (indexes,
+        frontend state, styling) were consciously deferred, which is a more honest
+        picture than feature-only cuts. PREP: be ready to explain the notification
+        nuance — what the MVP notification experience was versus the in-app
+        notifications that came after. Also have the deciding rule for what made the
+        MVP list, and know which deferred items shipped before go-live vs. after GA.
       </aside>
     </section>
 
@@ -155,7 +158,7 @@
           <div class="sub"><span>authorization &amp; practice isolation</span><span>task + recipients written transactionally</span><span>group → user resolution</span><span>notification creation</span><span>scheduled sweep for stale &amp; orphaned tasks</span></div>
         </div>
         <div class="layer"><span class="name">SQL Server</span>
-          <div class="sub"><span>current-state tables</span><span>temporal history on every table</span><span class="todo">inbox indexes: confirm</span></div>
+          <div class="sub"><span>current-state tables</span><span>temporal history on every table</span><span>table indexes added after MVP</span></div>
         </div>
       </div>
       <aside class="notes">
