@@ -17,7 +17,7 @@
     <section data-section="context">
       <p class="kicker">Project retrospective · Flatiron Health</p>
       <h1 style="font-size:1.9em">Replacing a legacy EHR tasking system under a contractual deadline</h1>
-      <p class="muted" style="margin-top:1em">Led a team of 4–5 engineers (me included) over ~6–8 months and delivered a high-risk replacement on time — through constrained scope, controlled coexistence, and incremental rollout.</p>
+      <p class="muted" style="margin-top:1em">Led a team of 4–5 engineers (me included) over roughly 6–8 months. We delivered a high-risk replacement on time by constraining scope, running alongside the legacy system instead of migrating, and rolling out incrementally.</p>
       <p class="small muted" style="margin-top:2.5em">Andrew Ingraham · Senior Software Engineer, project lead</p>
       <aside class="notes">
         One-liner first: "Tasks is how staff at an oncology practice route work to each
@@ -31,10 +31,10 @@
       <p class="kicker">Stakes &amp; constraints</p>
       <h2>Why this wasn't just a CRUD feature</h2>
       <ul class="small">
-        <li>A top-10 most requested product change, sustained over an extended period — and a high-visibility initiative internally.</li>
+        <li>One of the ten most requested product changes for a long stretch, and highly visible inside the company.</li>
         <li>A legacy Tasking feature that was badly broken but still actively used: the replacement had to be a functional superset, transitioned without breaking live clinical workflows.</li>
         <li>A contractual obligation to deliver to a subset of practices by a fixed date, with significant business cost to a miss.</li>
-        <li>3–4 engineers besides me, in one of two work-streams — the other carrying an EHR certification with its own immovable deadline, so people had to stay movable between streams.</li>
+        <li>3–4 engineers besides me, in one of two work-streams. The other stream was carrying an EHR certification with its own immovable deadline, so people had to stay movable between the two.</li>
       </ul>
       <aside class="notes">
         Every design decision that follows traces back to these four constraints; name that
@@ -108,7 +108,7 @@
     <section data-section="design">
       <p class="kicker">Scope</p>
       <h2>Where we drew the MVP line</h2>
-      <p class="small"><span class="todo">Bulk edits is real — the rest is an example split; replace with the actual cuts before presenting</span></p>
+      <p class="small"><span class="todo">Bulk edits is real; the rest is an example split. Replace with the actual cuts before presenting.</span></p>
       <div class="cols">
         <div>
           <p class="col-label">Shipped for the contractual date</p>
@@ -124,7 +124,7 @@
         <div>
           <p class="col-label">Deliberately deferred</p>
           <ul class="small">
-            <li>Bulk task edits — cut from MVP, then landed before go-live once the date was safe</li>
+            <li>Bulk task edits (cut from MVP, added back before go-live once the date was safe)</li>
             <li>User-created custom groups</li>
             <li>Saved filters</li>
             <li>Email / mobile notifications</li>
@@ -189,8 +189,8 @@
         </div>
       </div>
       <ul class="small" style="margin-top:1em">
-        <li>Assignee is accountability; recipients are visibility — one owner, many watchers.</li>
-        <li>Groups (e.g. Nursing) resolve to individual recipients at send time via a role→user mapping. <span class="todo">confirm modeling + what happens when membership changes later</span></li>
+        <li>The assignee owns the task; recipients can see and follow it.</li>
+        <li>Groups like Nursing resolve to individual recipients at send time via a role-to-user mapping. <span class="todo">confirm modeling + what happens when membership changes later</span></li>
       </ul>
       <aside class="notes">
         PREP: "why is Notifications a separate table from Recipients?" — the exact
@@ -219,8 +219,8 @@
       <h2>Coexist with legacy, don't migrate</h2>
       <div class="tradeoff">
         <div class="cell"><div class="t">Alternatives</div>One-time migration of legacy tasks; or patch the legacy feature in place.</div>
-        <div class="cell"><div class="t">Chosen</div>Run both systems; each practice agreed a sunset date for legacy, enforced by feature flag: enable new → monitor legacy usage → disable legacy creation → off.</div>
-        <div class="cell"><div class="t">Benefit / cost</div>Migration risk off the critical path entirely; in exchange, dual support burden and active nudging of practices.</div>
+        <div class="cell"><div class="t">Chosen</div>Run both systems. Each practice agreed a sunset date for legacy, enforced by feature flag: enable the new system, monitor legacy usage, disable legacy creation, then turn it off.</div>
+        <div class="cell"><div class="t">Benefit / cost</div>Migration risk came off the critical path entirely. In exchange we took on dual support and had to actively nudge practices off the old system.</div>
         <div class="cell"><div class="t">Revisit trigger</div>If sunset dates had slipped en masse, or dual support had begun eating the team, we'd have revisited a one-time conversion.</div>
       </div>
       <aside class="notes">
@@ -235,13 +235,13 @@
     <!-- 8 · Deep dive: history -->
     <section data-section="decisions">
       <p class="kicker">Decision 2 of 3 · the one that bit us</p>
-      <h2>Temporal tables: free audit, expensive history</h2>
+      <h2>Temporal tables made audit easy and history hard</h2>
       <ul class="small">
         <li><strong>Why they looked right:</strong> built-in row versioning, near-zero implementation cost, strong audit support, a familiar SQL Server capability.</li>
-        <li><strong>The failure mode:</strong> one user action — reassign, add a recipient, change status, post a message — lands as independent version rows in four tables. Product history means merging four version streams into one ordered, human-readable timeline. <span class="todo">confirm the specifics: ordering approach, worst downstream bugs</span></li>
-        <li><strong>What I'd build today:</strong> temporal tables for compliance and forensics; a separate append-only activity log, written at mutation time, for user-facing history.</li>
+        <li><strong>The failure mode:</strong> one user action (reassign, add a recipient, change status, post a message) lands as independent version rows in four tables. Building product history meant merging four version streams into one ordered, human-readable timeline. <span class="todo">confirm the specifics: ordering approach, worst downstream bugs</span></li>
+        <li><strong>What I'd build today:</strong> temporal tables for compliance and forensics, plus a separate append-only activity log, written at mutation time, for user-facing history.</li>
       </ul>
-      <p class="small muted" style="margin-top:0.6em">The lesson: audit history and product-facing activity history have different consumers and different semantics — one storage mechanism shouldn't serve both.</p>
+      <p class="small muted" style="margin-top:0.6em">The lesson: audit history and product-facing activity history have different consumers and different semantics, so one storage mechanism shouldn't serve both.</p>
       <aside class="notes">
         The deck's central technical lesson — take time here. Walk the concrete scenario
         slowly; it's what makes the lesson land. PREP: be ready for "was timestamp
@@ -254,10 +254,10 @@
     <!-- 9 · Deep dive: frontend consistency -->
     <section data-section="decisions">
       <p class="kicker">Decision 3 of 3</p>
-      <h2>Server-owned state over client-side cleverness</h2>
+      <h2>Keeping task state on the server</h2>
       <ul class="small">
-        <li>Task data was treated as server-owned: mutations completed on the server, then the affected views refreshed — the history panel refreshed on every edit. <span class="todo">confirm refresh scope: whole inbox or affected resources?</span></li>
-        <li>The trade: modest extra network traffic for simpler consistency semantics and far less mutation logic to get wrong under deadline — the main alternative was mirroring state into Redux, which we deliberately bypassed for task data.</li>
+        <li>Mutations completed on the server, then the affected views refreshed. The history panel, for example, refreshed on every edit. <span class="todo">confirm refresh scope: whole inbox or affected resources?</span></li>
+        <li>The trade: modest extra network traffic bought simpler consistency semantics and far less mutation logic to get wrong under deadline. The main alternative was mirroring state into Redux, which we deliberately bypassed for task data.</li>
         <li>The data-fetching layer we built for this became a reusable strategy that replaced error-prone existing patterns beyond our feature.</li>
       </ul>
       <aside class="notes">
@@ -273,9 +273,9 @@
     <!-- 10 · Execution and critical path -->
     <section data-section="execution">
       <p class="kicker">Execution</p>
-      <h2>The plan was a risk detector, not a waterfall</h2>
+      <h2>A plan built to surface risk early</h2>
       <ul class="small">
-        <li>Ticketed and sequenced essentially the whole project up front — vertical slices, dependency-ordered so 4+ engineers worked in parallel without gating each other, with ownership areas matched to interest.</li>
+        <li>Ticketed and sequenced nearly the whole project up front in vertical slices, ordered so four or more engineers could work in parallel without blocking each other. Ownership areas were matched to each engineer's interests.</li>
         <li>An auto-adjusting Gantt chart re-forecast the completion date as tickets closed: schedule risk surfaced weeks before it became unrecoverable, while estimates and scope kept moving underneath.</li>
         <li><span class="todo">Add one concrete example: a place where the forecast moved and we cut or resequenced scope in response</span></li>
       </ul>
@@ -315,14 +315,14 @@
         </div>
         <div>
           <div class="num">Beyond MVP</div>
-          <div class="label">additional features shipped on top — bulk edits landed before go-live</div>
+          <div class="label">additional features shipped on top; bulk edits landed before go-live</div>
         </div>
         <div>
           <div class="num">~6 months</div>
           <div class="label">before the first customer-reported defect</div>
         </div>
       </div>
-      <p class="small muted" style="margin-top:1.4em">The defect record is encouraging rather than conclusive: the intentionally constrained MVP reduced exposed surface area, and we didn't maintain a rigorous defect-rate metric. Adoption and NPS were high; I no longer have the exact figures. <span class="todo">recover concrete adoption evidence: practices enabled, tasks/week, legacy usage decline, or a specific recognition event</span></p>
+      <p class="small muted" style="margin-top:1.4em">The defect record is encouraging but not conclusive: the intentionally constrained MVP reduced exposed surface area, and we didn't maintain a rigorous defect-rate metric. Adoption and NPS were high; I no longer have the exact figures. <span class="todo">recover concrete adoption evidence: practices enabled, tasks/week, legacy usage decline, or a specific recognition event</span></p>
       <aside class="notes">
         Lead with the contractual delivery — it's the claim with the most evidence behind
         it. PREP: "how would you know if users hit unreported bugs?" — the honest answer
@@ -334,10 +334,10 @@
     <!-- 13 · What failed -->
     <section data-section="reflection">
       <p class="kicker">What failed</p>
-      <h2>The costs that were real</h2>
+      <h2>What went badly</h2>
       <ul class="small">
-        <li>The temporal-table choice made user-facing history a tremendous headache, with a tail of downstream complexity (slide 8).</li>
-        <li>Embedding the feature in legacy Visual Basic pages, on top of error-prone existing data fetching, added constant drag — the reusable fetching layer was built in self-defense.</li>
+        <li>The temporal-table choice made user-facing history a tremendous headache, with a tail of downstream complexity.</li>
+        <li>Embedding the feature in legacy Visual Basic pages, on top of error-prone existing data fetching, added constant drag. The reusable fetching layer started as a way to cope with that.</li>
         <li>I delegated implementation ownership without first making the architectural decision boundary explicit; by the time I raised concerns, the engineer had already invested heavily in their design.</li>
       </ul>
       <aside class="notes">
@@ -356,11 +356,11 @@
       <p class="kicker">Reflection</p>
       <h2>Three lessons I still use</h2>
       <ol class="small">
-        <li>Separate audit storage from user-facing activity history — different consumers, different semantics, different designs.</li>
-        <li>Define architectural decision rights before delegating implementation ownership, so disagreement surfaces as design review rather than as sunk cost.</li>
-        <li>Sequence the whole project up front to expose the critical path — then treat the plan as a risk detector and keep revising scope and estimates against it.</li>
+        <li>Separate audit storage from user-facing activity history. They have different consumers and need different designs.</li>
+        <li>Define architectural decision rights before delegating implementation ownership, so disagreement surfaces during design review instead of after someone has sunk weeks into an approach.</li>
+        <li>Sequence the whole project up front to expose the critical path, then keep revising scope and estimates against it as reality comes in.</li>
       </ol>
-      <p class="small muted" style="margin-top:1em">Before starting, I interviewed several senior engineers about how they decomposed large projects, and synthesized that into the planning and design process I used here — and have since taught to other teams.</p>
+      <p class="small muted" style="margin-top:1em">Before starting, I interviewed several senior engineers about how they decomposed large projects, and synthesized that into the planning and design process I used here and have since taught to other teams.</p>
       <p style="margin-top:1.6em" class="muted">Happy to go deeper on any of it.</p>
       <aside class="notes">
         Stop talking after the closing line. PREP, near-guaranteed: "what is that
