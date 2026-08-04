@@ -17,13 +17,12 @@
     <section data-section="context">
       <p class="kicker">Project retrospective</p>
       <h1>Tasks</h1>
-      <p class="muted">Flatiron Health · <span class="todo">2023–2025 (your dates)</span></p>
-      <p class="small muted" style="margin-top:4em">Andrew Ingraham · <span class="todo">your title</span></p>
+      <p class="muted">Flatiron Health · <span class="todo">your dates, e.g. 2022–2023</span></p>
+      <p class="small muted" style="margin-top:4em">Andrew Ingraham · <span class="todo">your exact title</span></p>
       <aside class="notes">
-        Open with one sentence: what Tasks is, in plain language, before touching the slides.
-        Interviewers remember a clean one-liner. Something like: "Tasks is the work queue
-        inside Flatiron's oncology EHR — it's how clinic staff track everything that isn't a
-        patient visit."
+        One-liner before touching the slides: "Tasks is how staff at an oncology practice
+        route work to each other inside the EHR — near-realtime messaging tied to patients
+        and orders, so nothing falls through the cracks between a visit and the next step."
       </aside>
     </section>
 
@@ -32,28 +31,31 @@
       <p class="kicker">Context</p>
       <h2>Where Tasks sits</h2>
       <ul>
-        <li><span class="todo">One line on Flatiron for interviewers who don't know it — e.g. "Flatiron builds software for community oncology clinics, including the OncoEMR electronic health record."</span></li>
-        <li><span class="todo">What Tasks is and who uses it (nurses? front desk? physicians? how many users / clinics?)</span></li>
-        <li><span class="todo">Why it matters clinically or operationally — what breaks when task work falls through</span></li>
+        <li>Flatiron Health builds software for community oncology, including OncoEMR — the electronic health record these practices run on.</li>
+        <li>Tasks lets practice staff message each other in near-realtime about work that needs doing: subject, status, urgency, due date, assignee, recipients — with an inbox, notifications, and the ability to send to a group like Nursing rather than naming individuals.</li>
+        <li>Tasks attach to entities like patients and orders, and surface wherever that entity appears in the EHR.</li>
       </ul>
       <aside class="notes">
-        Keep this to 45 seconds. The goal is just enough context that the problem slide lands.
-        Don't explain the whole EHR.
+        45 seconds max. If asked "why does an EHR need this": clinical work is handoffs —
+        a physician flags something, nursing follows up, front desk schedules. Before Tasks
+        that coordination lived in workarounds outside the system of record.
       </aside>
     </section>
 
     <!-- 3 · The problem -->
     <section data-section="problem">
       <p class="kicker">The problem</p>
-      <h2><span class="todo">The user pain, stated as a sentence — not "improve tasks"</span></h2>
+      <h2>Practices kept asking for this — and the tool they had was broken</h2>
       <ul>
-        <li><span class="todo">Evidence #1 — a number if you have one (volume, time lost, backlog, NPS verbatim)</span></li>
-        <li><span class="todo">Evidence #2 — what users actually did as a workaround</span></li>
-        <li><span class="todo">Why now — what made this the moment to invest</span></li>
+        <li>In-EHR tasking sat in our top 10 most requested changes for an extended period.</li>
+        <li>A legacy Tasking feature existed but was badly broken — yet some practices still depended on it, so we couldn't just remove it. Anything new had to be a functional superset.</li>
+        <li>Why now: we were contractually obligated to deliver to a subset of practices by a fixed date. The deadline was immovable and the miss cost was heavy.</li>
       </ul>
       <aside class="notes">
-        This is the slide interviews dig into. Be ready for: "How did you know this was the
-        right problem?" and "What did you deprioritize to work on this?"
+        Likely follow-ups: "How did you know it was the right problem?" — sustained top-10
+        demand plus a contractual commitment made prioritization unusually clear; the real
+        judgment calls were in scoping, not selection. "What did you deprioritize?" — the
+        honest answer is the MVP cut itself: everything non-essential moved post-GA.
       </aside>
     </section>
 
@@ -65,21 +67,23 @@
         <div>
           <p class="col-label">Me</p>
           <ul class="small">
-            <li><span class="todo">Your actual scope — strategy? roadmap? delivery? stakeholders?</span></li>
-            <li><span class="todo">What you personally did vs. delegated</span></li>
+            <li>Led the project end to end: system design, scoping, sequencing the work, delivery, and rollout.</li>
+            <li>One of my first big projects leading multiple engineers — I went into it deliberately collecting approaches from senior engineers.</li>
           </ul>
         </div>
         <div>
           <p class="col-label">The team</p>
           <ul class="small">
-            <li><span class="todo">Team shape — # engineers, design, data, clinical SMEs</span></li>
-            <li><span class="todo">Key partners — other teams, clinical ops, customers</span></li>
+            <li>3–4 engineers besides me, organized as one of two loose work-streams so we could reallocate people as needed.</li>
+            <li>The catch: the other work-stream was an EHR certification with its own immovable deadline — flexibility on paper, contention in practice.</li>
           </ul>
         </div>
       </div>
       <aside class="notes">
-        Be precise about ownership — inflated claims get probed. "I" for what you did,
-        "we" for what the team did, and be consistent.
+        Be precise: "I" for design, sequencing, and the calls on the next slides; "we" for
+        the build. If asked about the work-stream tension: both deadlines were contractual
+        or regulatory, so reallocation was a last resort — which raised the price of any
+        slip and pushed me toward the risk-minimizing choices that follow.
       </aside>
     </section>
 
@@ -88,66 +92,76 @@
       <p class="kicker">Approach</p>
       <h2>The bets we made</h2>
       <ol>
-        <li><span class="todo">Bet #1 — a real strategic choice, phrased as a choice (e.g. "rebuild the queue model rather than patch notifications")</span></li>
-        <li><span class="todo">Bet #2</span></li>
-        <li><span class="todo">Bet #3 — cut this if you only had two</span></li>
+        <li><strong>Cut to a genuine MVP.</strong> Every scope decision optimized for the contractual date — but cut in a way that wasted no effort, so features could layer on cleanly after.</li>
+        <li><strong>Don't migrate legacy tasks.</strong> Run old and new side by side, and sunset legacy per practice behind a feature flag.</li>
+        <li><strong>Spend nothing on novelty.</strong> A deliberately boring stack — C#/VB, React, SQL Server — and refresh-on-change instead of clever frontend state.</li>
       </ol>
       <aside class="notes">
-        Frame these as decisions with alternatives, not a feature list. Each one should
-        have a "we could have instead..." you can voice if asked.
+        Each bet has a road-not-taken to voice if asked: we could have patched the legacy
+        feature (broken foundation, still bounded by it); we could have migrated data
+        (next slide); we could have built rich Redux state (speed and bug-avoidance won).
+        Deep-dive pocket — the schema: Tasks, Messages, Recipients, Notifications tables,
+        each with a temporal table behind it for history and audit.
       </aside>
     </section>
 
     <!-- 6 · A decision worth discussing -->
     <section data-section="approach">
       <p class="kicker">A decision worth discussing</p>
-      <h2><span class="todo">The hardest call you made</span></h2>
+      <h2>Migrate the old tasks, or run both systems?</h2>
       <div class="cols">
         <div>
           <p class="col-label">The options</p>
           <ul class="small">
-            <li><span class="todo">Option A and its appeal</span></li>
-            <li><span class="todo">Option B and its appeal</span></li>
+            <li><strong>Migrate</strong> — one system, clean cutover, no dual support burden.</li>
+            <li><strong>Run both</strong> — no risky transformation of a broken feature's data, and we ship sooner.</li>
           </ul>
         </div>
         <div>
           <p class="col-label">What we chose, and why</p>
-          <p class="small"><span class="todo">The choice, the deciding factor, and what it cost you</span></p>
+          <p class="small">We ran both. Each practice agreed an end date for legacy Tasks, which we could enforce via feature flag. The cost: supporting two systems at once and actively nudging practices off the old one — but it kept migration risk entirely off the critical path to the contractual date.</p>
         </div>
       </div>
       <aside class="notes">
-        This slide exists to invite the interviewer in. End it by pausing — "happy to go
-        deeper on this one" — it turns the presentation into a conversation.
+        End with a pause — "happy to go deeper on this one." Strong follow-up material:
+        the sunset lever mattered because "temporary" dual systems become permanent without
+        an enforcement mechanism; the per-practice flag made the end date real rather than
+        aspirational.
       </aside>
     </section>
 
     <!-- 7 · What got hard -->
     <section data-section="approach">
       <p class="kicker">What got hard</p>
-      <h2><span class="todo">The thing that almost derailed it</span></h2>
+      <h2>History was harder than the schema suggested</h2>
       <ul>
-        <li><span class="todo">What happened — technical, organizational, or clinical</span></li>
-        <li><span class="todo">What you did about it, concretely</span></li>
-        <li><span class="todo">How it resolved — including anything that stayed unresolved</span></li>
+        <li>Temporal tables made auditing nearly free — but reconstructing a user-friendly task history across four temporally-versioned tables was a tremendous headache, with a tail of downstream issues.</li>
+        <li>Embedding the feature across the app meant landing React inside legacy Visual Basic pages, on top of pre-existing data fetching that was error-prone. We built a reusable data-fetching strategy that replaced the old patterns beyond our own feature.</li>
+        <li>An engineer I'd given ownership to was committed to a design I disagreed with — navigating that without undermining the ownership I'd granted was its own project.</li>
       </ul>
       <aside class="notes">
-        Honesty is the differentiator here. A real mess handled well beats a smooth story.
-        Avoid villains — describe the constraint, not the person.
+        No villains — describe constraints, not people. On the disagreement: the tension was
+        between honoring delegated ownership and holding the system design line; how I'd
+        handle it now is on the last slide. Optional extra example if asked for more: the
+        service mapping roles to users (for group sends like "Nursing") turned out to be
+        broken and needed fixing along the way.
       </aside>
     </section>
 
-    <!-- 8 · What shipped -->
+    <!-- 8 · How we ran it -->
     <section data-section="approach">
-      <p class="kicker">What shipped</p>
-      <h2>The product, briefly</h2>
-      <div class="figure">
-        <p class="small muted" style="padding:2.5em 1em; text-align:center">
-          <span class="todo">Drop a product screenshot here (img tag) — or delete this slide if you can't share screens from a health product. A hand-drawn-style diagram of the workflow is a good substitute.</span>
-        </p>
-      </div>
+      <p class="kicker">Execution</p>
+      <h2>How we ran it</h2>
+      <ul>
+        <li>Ticketed and sequenced essentially the entire project up front — vertical slices, ordered so 4+ engineers could work in parallel without gating each other. An auto-adjusting Gantt chart tracked our estimated completion date against the deadline continuously.</li>
+        <li>Matched engineers' interests to areas of ownership.</li>
+        <li>Rolled out incrementally behind a feature flag: lower-risk practices who wanted early access first, then GA. Bug bashes with stakeholders and pre-mortems ahead of go-live.</li>
+      </ul>
       <aside class="notes">
-        If real screenshots are off-limits (PHI, confidentiality), say so out loud — it
-        reads as judgment, not evasion — and describe the before/after workflow instead.
+        The upfront sequencing is the thing interviewers bite on: the point wasn't a
+        waterfall plan, it was making parallelism safe — knowing at any moment whether the
+        date was at risk, weeks before it became unrecoverable. The Gantt chart re-estimated
+        as tickets closed, so "are we on track?" was a lookup, not a meeting.
       </aside>
     </section>
 
@@ -157,22 +171,23 @@
       <h2>What changed</h2>
       <div class="stats">
         <div>
-          <div class="num"><span class="todo">XX%</span></div>
-          <div class="label"><span class="todo">Your headline metric, with its baseline</span></div>
+          <div class="num">~6 months</div>
+          <div class="label">from GA to the first reported bug</div>
+        </div>
+        <div>
+          <div class="num">On time</div>
+          <div class="label">contractual practices live by the committed date — with room left to ship features beyond the MVP</div>
         </div>
         <div>
           <div class="num"><span class="todo">XX</span></div>
-          <div class="label"><span class="todo">Second metric — adoption, time saved, volume</span></div>
-        </div>
-        <div>
-          <div class="num"><span class="todo">XX</span></div>
-          <div class="label"><span class="todo">Third metric, or replace with a customer quote</span></div>
+          <div class="label"><span class="todo">your adoption / NPS figure — even directional ("NPS in the top quartile of our features") beats "high"</span></div>
         </div>
       </div>
-      <p class="small muted" style="margin-top:1.4em"><span class="todo">One honest caveat about the numbers — what they don't capture, or what you'd measure differently. Saying this unprompted builds enormous credibility.</span></p>
+      <p class="small muted" style="margin-top:1.4em">The honest caveat: part of the quality story is a deliberately small surface area — the MVP cut did as much for reliability as the engineering did. The project was celebrated internally.</p>
       <aside class="notes">
-        Know how each number was measured — sample, timeframe, denominator. "How did you
-        measure that?" is a near-certain follow-up.
+        Say "first *reported* bug" precisely — it measures user-visible quality, not the
+        absence of defects. Be ready for "how was adoption measured?" — know the
+        denominator (practices? users?) and timeframe before using any number here.
       </aside>
     </section>
 
@@ -181,12 +196,13 @@
       <p class="kicker">Retrospective</p>
       <h2>What I'd do differently</h2>
       <ul>
-        <li><span class="todo">Something real, with the cost it had — not a humblebrag like "moved too fast"</span></li>
-        <li><span class="todo">A second one, ideally about people or process rather than tech</span></li>
+        <li>Temporal tables were right for audit but wrong as the backbone of user-facing history. I'd prototype the hardest read path — "show me this task's history" — before committing the schema, instead of discovering its cost downstream.</li>
+        <li>On delegation: I'd establish how design decisions get made <em>before</em> handing over ownership, so disagreement surfaces as design review rather than as a standoff after someone is committed.</li>
       </ul>
       <aside class="notes">
-        Pick regrets you've genuinely metabolized — you should be able to say what you now
-        do differently because of each one.
+        Both regrets have a "what I now do differently": prototype the ugliest read path
+        first; agree decision rights at handoff. That's what makes them read as metabolized
+        rather than performed.
       </aside>
     </section>
 
@@ -195,13 +211,15 @@
       <p class="kicker">Retrospective</p>
       <h2>What I took from it</h2>
       <ul>
-        <li><span class="todo">Learning #1 — transferable, specific to this project's evidence</span></li>
-        <li><span class="todo">Learning #2</span></li>
+        <li>My approach to system design on a team. I asked 4–5 senior engineers how they approached it; one shared a strategy I still follow — and have since passed on to multiple teams.</li>
+        <li>Adjusting communication style to the audience — executives, practices, and engineers each needed a different version of the same status.</li>
+        <li>How to work with an engineer who's committed to an approach I disagree with, after I've given them the ownership.</li>
       </ul>
       <p style="margin-top:2em" class="muted">Happy to go deeper on any of it.</p>
       <aside class="notes">
-        End here and stop talking. Let the interviewer choose the thread. Have three
-        "deeper dives" ready: one technical, one stakeholder story, one metric deep-dive.
+        Stop talking here; let them pick the thread. Three deep-dives ready: technical —
+        temporal tables and the history read path; stakeholder — the practice-by-practice
+        legacy sunset; process — the upfront sequencing and auto-adjusting Gantt chart.
       </aside>
     </section>
 
